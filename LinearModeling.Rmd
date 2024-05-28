@@ -1,0 +1,674 @@
+---
+title: "Final Project"
+author: "Sheida Habibi"
+date: "2024-05-05"
+output:
+  html_document:
+    df_print: paged
+subtitle: Finding the corrolation between Human mobility and NO2 in the air for counties
+  with more than 500k population in the united states and how it differs during lockdown
+  and after lockdown.
+---
+
+
+### Packages
+```{r}
+library(tidyverse)
+library(janitor)
+library(here)
+library(broom)
+library(GGally)
+library(car)
+library(dplyr)
+```
+
+### Read Data of year 2020
+```{r}
+data_2020 <- read.csv(file = "Counties_over_500000_2020_march_april.csv")
+data_2020$Day_of_Week <- factor(data_2020$Day_of_Week)
+data_2020
+```
+
+
+```{r}
+head(data_2020)
+data_2020<- select(data_2020, -X)
+
+```
+
+
+### Summary of the data:
+
+```{r}
+summary(data_2020)
+```
+
+### Corrolation Matrix:
+```{r, fig.height=10, fig.weight=10}
+data_2020 %>% ggpairs(columns = c(3:8,2)) +
+theme_bw()
+
+```
+### The corrolation between No2 and the independent variables can be seen in the above matrix.From the plots it can be seen that the linear relationship exist between the dependent and independent variables.
+
+
+### Creating the first Model including all the variables:
+
+```{r}
+
+model1_2020 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model1_2020)
+
+```
+### Let's chech the diagnostic of model:
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model1_2020, pch = 16, sub.caption = "")
+title(main="Diagnostics for model1_2020", outer=TRUE)
+
+```
+### It seems most of the conditions are met except the fact that we have an influential poin
+
+# excluding point number 1 because it is an influential point.
+
+
+```{r}
+data_2020 <- data_2020%>% slice(-1)
+```
+
+### let's run the previous model excluding point number 1:
+
+```{r}
+model1_2020 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model1_2020)
+
+```
+### Let's exclude retail_and_recreation_percent_change_from_baseline because it has the highest p-value, and as we have the normaly condition met we can say that we do not have strong evidence to say that it can explain our response.
+
+```{r}
+model2_2020 <- lm( NO2 ~ grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model2_2020)
+
+```
+
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model2_2020, pch = 16, sub.caption = "")
+title(main="Diagnostics for model2_2020", outer=TRUE)
+
+```
+
+### Condition are pretty much met here so we are good to move forwrd.
+
+### Excluding grocery_and_pharmacy_percent_change_from_baseline because it has the highest p-value and as normality condition is met we can say that there is not a strong evidence to include it in the model.
+
+
+```{r}
+model3_2020 <- lm( NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model3_2020)
+
+```
+
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model3_2020, pch = 16, sub.caption = "")
+title(main="Diagnostics for model2_2020", outer=TRUE)
+
+```
+
+
+### Lets exclude workplaces_percent_change_from_baseline which has the highest p-value in the model so there is a  weak evidence that we need it in the model:
+
+```{r}
+model4_2020 <- lm( NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model4_2020)
+
+```
+### Lets check the model:
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model3_2020, pch = 16, sub.caption = "")
+title(main="Diagnostics for model3_2020", outer=TRUE)
+
+```
+
+### Seems gtreat! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid marrch to mid april for the year 2020.
+
+### 1.parks_percent_change_from_baseline
+### 2.transit_stations_percent_change_from_baseline
+### 3.residential_percent_change_from_baseline 
+### 4.Day_of_Week
+
+
+
+## Final Model 2020:
+
+#### Now, we can talk about the result of model 4 as our final model for year 2020. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
+
+#### NO2 = 9.64831 + 0.06593 × (parks_percent_change_from_baseline) - 0.37814 × (transit_stations_percent_change_from_baseline) - 0.95633 × (residential_percent_change_from_baseline) + 1.54640 × (Day_of_Week1) + 1.72536 × (Day_of_Week2) + 1.31874 × (Day_of_Week3) + 2.19430 × (Day_of_Week4) - 5.45247 × (Day_of_Week5) - 9.33665 × (Day_of_Week6)
+
+## Interpratation of MLR Model4:
+
+### parks_percent_change_from_baseline:
+
+#### For a 1 percent from baseline increase in parks_percent_change_from_baseline, we estimate the mean of NO2 percentage increase by 0.06593 ,after controlling for other variables.
+
+### transit_stations_percent_change: 
+
+#### For a 1 percent increase from baseline in transit stations percent change, we estimate the mean of NO2 percentage to decrease by 0.37814, after controlling for other variables.
+
+### residential_percent_changet: 
+
+#### For a 1 percent increase from baseline in residential percent change, we estimate the mean of NO2 percentage to decrease by  0.95633, after controlling for other variables.
+
+
+
+## Overall F-test for model4:
+
+#### • Full Model:NO2=β0 +β1×(parks_percent_change_from_baseline)+β2×(transit_stations_percent_change_from_baseline)+β3×(residential_percent_change_from_baseline)+β4×(Day_of_Week1)+β5×(Day_of_Week2)+β6×(Day_of_Week3)+β7×(Day_of_Week4)+β8×(Day_of_Week5)+β9×(Day_of_Week6)
+
+#### H0 : No explanatory variables should be included in the model: β1 = β2 = · · · = βK = 0.
+
+#### HA : At least one explanatory variable should be included in the model: Not all βk’s = 0 for
+
+#### A very low p-value ( < 2.16e-05) suggests strong evidence against the null hypothesis, indicating that at least one of the β coefficients significantly differs from 0. This confirms the utility of including these explanatory variables in the model to predict NO2 levels.
+
+#### R² value is 0.7913, implies that approximately 79.13% of the variability in the dependent variable (NO2 levels) is explained by the variations in parks attendance, transit and residential changes, and days of the week.
+
+#### A slightly lower value than the Multiple R-Squared, specifically 0.7018, accounts for the number of predictors in the model and provides a more accurate measure of the model's explanatory power when adjusting for degrees of freedom.
+
+
+### Lets do the k-fold cross validation to validate our model and make sure that it is not over fitting:
+
+### K fold cross validation:
+```{r}
+set.seed(123)
+# Assuming caret is already installed and loaded
+library(caret)
+data_2020 = data_2020
+
+# Define control method for 4-fold CV
+control <- trainControl(method = "cv", number = 4)
+
+# Train the model with linear regression
+# Replace y with your target variable, and . indicates all other variables as predictors
+model_kfold_2020 <- train(NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week  , data = data_2020, method = "lm", trControl = control)
+
+# Print the results, including RMSE
+print(model_kfold_2020)
+```
+
+### Lets check the model using random forest and compare to make sure that the linear moodel is explaining the response in a good way:
+
+```{r}
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Create indices for the train set
+trainIndex <- createDataPartition(data_2020$NO2, p = 0.75, list = FALSE, times = 1)
+
+# Create the training data and testing data
+trainData <- data_2020[trainIndex, ]
+testData <- data_2020[-trainIndex, ]
+
+library(randomForest)
+# Create the random forest model
+# y is the numeric response variable and . represents all other variables in the data as predictors
+rf_model_2020 <- randomForest(NO2 ~  parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = trainData, ntree = 100, mtry = 3, importance = TRUE)
+
+# Print the model summary
+print(rf_model_2020)
+
+# Plot error as trees are added
+plot(rf_model_2020)
+
+# View variable importance
+importance(rf_model_2020)
+varImpPlot(rf_model_2020)
+
+```
+
+```{r}
+# Predict using the random forest model
+predictions <- predict(rf_model_2020, testData)
+
+
+
+mse <- mean((predictions - testData$NO2)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(testData$NO2 - predictions))
+print(paste("Mean Absolute Error (MAE):", mae))
+print(paste("MSE:", mse))
+print(paste("RMSE:", rmse))
+
+```
+### Based on the result for k-fold cross validation and random forest, we can say that the linear model explain the NO2 well.
+
+
+
+### 2021
+
+#2021_midmar_mid april_more than 500k
+
+# Reading Data
+```{r}
+data_2021 <- read.csv(file = "Counties_over_500000_2021_march_april.csv")
+
+data_2021$Day_of_Week <- factor(data_2021$Day_of_Week)
+
+```
+
+
+```{r}
+data_2021<- select(data_2021, -index)
+head(data_2021)
+```
+
+```{r, fig.height=10, fig.weight=10}
+data_2021 %>% ggpairs(columns = c(3:8,2)) +
+theme_bw()
+
+```
+### Creating the first Model including all the variables:
+
+```{r}
+
+model1_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2021)
+
+# Summary
+summary(model1_2021)
+
+```
+
+### Lets's check the model first:
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model1_2021, pch = 16, sub.caption = "")
+title(main="Diagnostics for model1_2021", outer=TRUE)
+
+```
+
+### Point number21 is an influesntial point. Therefore, we exclude it from the data:
+```{r}
+data_2021 = data_2021%>% slice(-21)
+```
+
+### let's run the moodel after exluding the point 21:
+```{r}
+
+model1_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2021)
+
+# Summary
+summary(model1_2021)
+
+```
+### Let's exclude residential_percent_change_from_baseline from model since it is the least significant.
+```{r}
+
+model2_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline +	Day_of_Week , data = data_2021)
+
+# Summary
+summary(model2_2021)
+
+```
+### Let's exlude day of week since it is the least significant:
+```{r}
+
+model3_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline  , data = data_2021)
+
+# Summary
+summary(model3_2021)
+
+```
+
+### Let's exclude grocery_and_pharmacy_percent_change_from_baseline since it is the least signiificant:
+
+```{r}
+
+model4_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline  , data = data_2021)
+
+# Summary
+summary(model4_2021)
+
+```
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model3_2021, pch = 16, sub.caption = "")
+title(main="Diagnostics for m4", outer=TRUE)
+
+```
+
+### The model seems good since all the variables seems significant.
+
+### Seems gtreat! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid marrch to mid april for the year 2021.
+
+### 1.parks_percent_change_from_baseline
+### 2.transit_stations_percent_change_from_baseline
+### 3.residential_percent_change_from_baseline 
+### 4.workplaces_percent_change_from_baseline
+
+
+
+## Final Model 2021:
+
+#### Now, we can talk about the result of model 4 as our final model for year 2021. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
+
+#### NO2 = 0.44173 + 0.29639 × (retail_and_recreation_percent_change_from_baseline) + 0.04553 × (parks_percent_change_from_baseline) − 0.53085 × (transit_stations_percent_change_from_baseline) + 0.09487 × (workplaces_percent_change_from_baseline)
+
+## Interpratation of MLR Model4:
+
+
+#### Retail and Recreation: Each 1% increase from the baseline is associated with a 0.29639 increase in NO2 levels.
+
+#### Parks: Each 1% increase from the baseline is associated with a 0.04553 increase in NO2 levels.
+
+#### Transit Stations: Each 1% increase from the baseline is associated with a 0.53085 decrease in NO2 levels.
+
+#### Workplaces: Each 1% increase from the baseline is associated with a 0.09487 increase in NO2 levels.
+
+
+
+
+## Overall F-test for model4:
+
+#### • Full Model:NO2=β0 +β1×(parks_percent_change_from_baseline)+β2×(transit_stations_percent_change_from_baseline)+β3×(residential_percent_change_from_baseline)+β4×(Day_of_Week1)+β5×(Day_of_Week2)+β6×(Day_of_Week3)+β7×(Day_of_Week4)+β8×(Day_of_Week5)+β9×(Day_of_Week6)
+
+#### H0 : No explanatory variables should be included in the model: β1 = β2 = · · · = βK = 0.
+
+#### HA : At least one explanatory variable should be included in the model: Not all βk’s = 0 for
+
+#### Evidence against Null Hypothesis: The very low p-value (1.236e-06) from the F-statistic suggests strong evidence against the null hypothesis. This confirms that at least one of the β coefficients significantly differs from 0, indicating the necessity of including these explanatory variables in the model to explain the variability in NO2 levels.
+
+
+#### The Multiple R-squared value of 0.7062 implies that approximately 70.62% of the variability in NO2 levels is explained by the variations in retail and recreation, parks, transit stations, and workplace activities.
+ 
+#### The Adjusted R-squared value of 0.661 takes into account the number of predictors in the model and provides a more precise measure of the model's explanatory power, adjusting for the degrees of freedom.
+
+
+
+### Let's move forwad and check the K fold cross validation to make sure that our model is not over fitting.
+
+### K fold cross validation:
+```{r}
+
+# Define control method for 4-fold CV
+control <- trainControl(method = "cv", number = 4)
+
+# Train the model with linear regression
+# Replace y with your target variable, and . indicates all other variables as predictors
+model_kfold_2021 <- train(NO2 ~ retail_and_recreation_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline, data = data_2021, method = "lm", trControl = control)
+
+# Print the results, including RMSE
+print(model_kfold_2021)
+
+
+```
+# Let's performe random forest to compare with our model to make sure that the random forest is performing okay
+
+```{r}
+
+# Set the seed for reproducibility
+set.seed(123)
+
+
+# Create indices for the train set
+trainIndex <- createDataPartition(data_2021$NO2, p = 0.75, list = FALSE, times = 1)
+
+# Create the training data and testing data
+trainData <- data_2021[trainIndex, ]
+testData <- data_2021[-trainIndex, ]
+
+
+library(randomForest)
+# Create the random forest model
+# y is the numeric response variable and . represents all other variables in the data as predictors
+rf_model_2021 <- randomForest(NO2 ~ retail_and_recreation_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline, data = trainData, ntree = 100, mtry = 3, importance = TRUE)
+
+# Print the model summary
+print(rf_model_2021)
+
+# Plot error as trees are added
+plot(rf_model_2021)
+
+# View variable importance
+importance(rf_model_2021)
+varImpPlot(rf_model_2021)
+
+```
+
+```{r}
+# Predict using the random forest model
+predictions <- predict(rf_model_2021, testData)
+
+
+
+mse <- mean((predictions - testData$NO2)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(testData$NO2 - predictions))
+print(paste("Mean Absolute Error (MAE):", mae))
+print(paste("MSE:", mse))
+print(paste("RMSE:", rmse))
+
+```
+### By comparing the results, we can say that the Linear regression is a good model for explaining the NO2.
+
+
+#2022
+
+# 2022_midmar_mid april_more than 500k
+
+```{r}
+data_2022 <- read.csv(file = "Counties_over_500000_2022_march_april.csv")
+data_2022$Day_of_Week <- factor(data_2022$Day_of_Week)
+
+```
+
+
+```{r}
+
+data_2022<- select(data_2022, -index)
+
+```
+
+```{r, fig.height=10, fig.weight=10}
+data_2022 %>% ggpairs(columns = c(3:8,2)) +
+theme_bw()
+
+```
+
+```{r}
+
+model1_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2022)
+
+# Summary
+summary(model1_2022)
+
+```
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model1_2022, pch = 16, sub.caption = "")
+title(main="Diagnostics for model1_2022", outer=TRUE)
+
+```
+### Let's exlude point 32 and perform the model:
+```{r}
+data_2022 = data_2022%>% slice(-32)
+```
+
+```{r}
+
+model1_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2022)
+
+# Summary
+summary(model1_2022)
+
+```
+
+
+# Let's exclude day of the week:
+```{r}
+
+model2_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline  , data = data_2022)
+
+# Summary
+summary(model2_2022)
+
+```
+# let's exlude residential_percent_change_from_baseline which seems to be the least significant:
+
+```{r}
+
+model3_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline  , data = data_2022)
+
+# Summary
+summary(model3_2022)
+
+```
+# Lets' check the moodel:
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model3_2022, pch = 16, sub.caption = "")
+title(main="Diagnostics for model3_2022", outer=TRUE)
+
+```
+# seem good. Let's exclude workplaces_percent_change_from_baseline  which we do not have strong evidance to include it in the model:
+```{r}
+
+model4_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline , data = data_2022)
+
+# Summary
+summary(model4_2022)
+
+```
+# Great! Lets check the model:
+
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model4_2022, pch = 16, sub.caption = "")
+title(main="Diagnostics for m4", outer=TRUE)
+
+```
+
+
+### The model seems good since all the variables seems significant.
+
+### Seems gtreat! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid marrch to mid april for the year 2022.
+
+### 1.parks_percent_change_from_baseline
+### 2.transit_stations_percent_change_from_baseline
+### 3.retail_and_recreation_percent_change_from_baseline
+
+
+
+
+## Final Model 2022:
+
+#### Now, we can talk about the result of model 4 as our final model for year 2022. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
+
+#### NO2 = -15.30 + 1.33 × (retail_and_recreation_percent_change_from_baseline) + 0.10 × (parks_percent_change_from_baseline) - 1.36 × (transit_stations_percent_change_from_baseline)
+
+## Interpratation of MLR Model4:
+
+#### Retail and Recreation: Each 1% increase from the baseline in retail and recreation activities is associated with an increase of approximately 1.33365 units in NO2 levels.
+
+### Parks: Each 1% increase from the baseline in park visits is associated with an increase of approximately 0.09555 units in NO2 levels.
+
+### Transit Stations: Each 1% decrease from the baseline in transit station traffic is associated with a decrease of approximately 1.35743 units in NO2 levels.
+
+
+## Overall F-test for model4:
+
+#### • Full Model:NO2=β0 +β1×(parks_percent_change_from_baseline)+β2×(transit_stations_percent_change_from_baseline)+β3×(retail_and_recreation_percent_change_from_baseline)
+
+#### H0 : No explanatory variables should be included in the model: β1 = β2 = · · · = βK = 0.
+
+#### HA : At least one explanatory variable should be included in the model: Not all βk’s = 0 for
+
+#### The F-statistic from your model output has a very low p-value (2.092e-08), which provides strong evidence against the null hypothesis. This confirms that at least one of the β coefficients significantly differs from 0, indicating the necessity of including these explanatory variables in the model to explain the variability in NO2 levels.
+
+#### Multiple R-squared: 0.787, implying that approximately 78.7% of the variability in NO2 levels is explained by the variations in retail and recreation, parks, transit stations.
+
+### Adjusted R-squared: 0.7542, which takes into account the number of predictors in the model and provides a more precise measure of the model's explanatory power, adjusting for the degrees of freedom.
+
+
+### Let's performe K-fold cross validation to make sure that the model is not overfitting by comparing the results:
+
+### K fold cross validation:
+```{r}
+
+# Define control method for 4-fold CV
+control <- trainControl(method = "cv", number = 4)
+
+# Train the model with linear regression
+# Replace y with your target variable, and . indicates all other variables as predictors
+model_kfold_2022 <- train(NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline
+               +parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline, data = data_2022, method = "lm", trControl = control)
+
+# Print the results, including RMSE
+print(model_kfold_2022)
+
+
+```
+
+
+### Let's perform rando forest to make sure that our linear moodel is performing good enough.
+
+```{r}
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Create indices for the train set
+trainIndex <- createDataPartition(data_2022$NO2, p = 0.75, list = FALSE, times = 1)
+
+# Create the training data and testing data
+trainData <- data_2022[trainIndex, ]
+testData <- data_2022[-trainIndex, ]
+
+
+library(randomForest)
+# Create the random forest model
+# y is the numeric response variable and . represents all other variables in the data as predictors
+rf_model_2022 <- randomForest(NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline
+               +parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline, data = trainData, ntree = 100, mtry = 3, importance = TRUE)
+
+# Print the model summary
+print(rf_model_2022)
+
+# Plot error as trees are added
+plot(rf_model_2022)
+
+# View variable importance
+importance(rf_model_2022)
+varImpPlot(rf_model_2022)
+
+
+```
+
+```{r}
+# Predict using the random forest model
+predictions <- predict(rf_model_2022, testData)
+
+
+
+mse <- mean((predictions - testData$NO2)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(testData$NO2 - predictions))
+print(paste("Mean Absolute Error (MAE):", mae))
+print(paste("MSE:", mse))
+print(paste("RMSE:", rmse))
+
+```
+
+
