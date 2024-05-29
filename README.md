@@ -18,7 +18,7 @@ Investigating the association between the different mobility metrics and NO2 in 
 |4|   [ Visualizations ](#vs)    |
 |4.1|   [ NO2 Visualizations ](#vs-NO2)    |
 |4.2|   [ Mobility Visualizations ](#vs-Mobility)    |
-
+|5|   [ Filtering based on intended period ](#filtering)    |
 <a name="desc"></a>
 # 1. Description
 This repository focuses on data preprocessing, visualization, and analysis of the relationship between Google Mobility data and NO2 levels. Specifically, it aims to explore how well Google Mobility data, along with the day of the week, can explain the variability in NO2 levels in counties with more than 500K population.
@@ -217,6 +217,8 @@ plt.xticks(rotation=45)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/901d8c3c-2f52-411b-bfb4-1725b2129e81)
 
+**The following visualizations is done by tableau which is a tool for data visualization and does not require coding**
+
 ### Visualizing the NO2 Data for the period of mid march to mid April 2020:
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/e1ca79c0-e075-41f8-9b7f-789a658b2010">
 
@@ -315,7 +317,7 @@ plt.show()
 
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/886d6a44-8cfe-4e46-8ecc-0e7cd4cc6d6a)
 
-**Comparing gerocery andpharmecy percentage change from the baseline for different years:**
+**Comparing gerocery and pharmacy percentage change from the baseline for different years:**
 ```python
 weekly_means.index = pd.to_datetime(weekly_means.index)
 
@@ -500,14 +502,12 @@ plt.show()
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/73728c96-380e-4d8b-a7a4-c5c0fb3d9746)
 
 ### As an instant I brought Mobility data on the map and the distribution of that for different states located in different counties:
-<img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/66c2d876-bbe2-46bf-b29c-855fbe8d0d99">
-
-
-
+**This visualization is done by tableau which is a tool for visualization and does not require coding**
+<img width="800" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/66c2d876-bbe2-46bf-b29c-855fbe8d0d99">
 
 **Note:From the visualization, the period of mid-March to mid-April is selected for further analysis**
-
-
+<a name="filtering"></a>
+# 5 Filtering based on intended period 
 **Filteringmid-March to mid-April data for the year 2020, and putting it in a CSV file:**
 ```python
 start_date = '2020-03-15'
