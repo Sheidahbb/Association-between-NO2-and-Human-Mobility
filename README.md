@@ -80,7 +80,7 @@ d5= pd.concat([d4, d3], axis=0)
 d_m=d5[['sub_region_1','sub_region_2','date', 'retail_and_recreation_percent_change_from_baseline', 'grocery_and_pharmacy_percent_change_from_baseline',	'parks_percent_change_from_baseline',	'transit_stations_percent_change_from_baseline' ,	'workplaces_percent_change_from_baseline',	'residential_percent_change_from_baseline' ]]
 ```
 
-**Imputing the missing values by eplacinf them with the mean of that column:**
+**Imputing the missing values by explaining them with the mean of that column:**
 ```python
 d_m['retail_and_recreation_percent_change_from_baseline'] = d_m['retail_and_recreation_percent_change_from_baseline'].fillna(d_m['retail_and_recreation_percent_change_from_baseline'].mean())
 d_m['grocery_and_pharmacy_percent_change_from_baseline'] = d_m['grocery_and_pharmacy_percent_change_from_baseline'].fillna(d_m['grocery_and_pharmacy_percent_change_from_baseline'].mean())
@@ -453,3 +453,44 @@ plt.tight_layout()
 plt.show()
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/73728c96-380e-4d8b-a7a4-c5c0fb3d9746)
+
+
+**Note:From the visualization, the period of mid-March to mid-April is selected for further analysis**
+
+
+**Filteringmid-March to mid-April data for the year 2020, and putting it in a CSV file:**
+```python
+start_date = '2020-03-15'
+end_date = '2020-04-15'
+
+df_1 = df[(df['Date Local'] >=start_date ) & (df['Date Local'] <= end_date)]
+
+
+df_1['Day_of_Week'] = df_1['Date Local'].dt.dayofweek
+df_1.to_csv('Counties_over_500000_2020_march_april.csv')
+```
+
+**Filteringmid-March to mid-April data for the year 2021, and putting it in a CSV file:**
+```python
+start_date = '2021-03-15'
+end_date = '2021-04-15'
+
+df_2 = df[(df['Date Local'] >=start_date ) & (df['Date Local'] <= end_date)]
+df_2.reset_index(inplace=True)
+
+df_2['Day_of_Week'] = df_2['Date Local'].dt.dayofweek
+df_2.to_csv('Counties_over_500000_2021_march_april.csv')
+```
+
+**Filteringmid-March to mid-April data for the year 2022, and putting it in a CSV file:**
+```python
+start_date = '2022-03-15'
+end_date = '2022-04-15'
+
+df_3 = df[(df['Date Local'] >=start_date ) & (df['Date Local'] <= end_date)]
+df_3.reset_index(inplace=True)
+
+df_3['Day_of_Week'] = df_3['Date Local'].dt.dayofweek
+df_3.to_csv('Counties_over_500000_2022_march_april.csv')
+```
+
