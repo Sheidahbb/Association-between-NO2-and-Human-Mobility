@@ -1,6 +1,6 @@
 # Association-between-NO2-and-Human-Mobility
 ## Author: Sheida Habibi
-## Title
+## Title 
 Investigating the association between the different mobility metrics and NO2 in theair.
 ## Content table
 |  Number  |    Content  |
@@ -672,13 +672,450 @@ title(main="Diagnostics for model4_2020", outer=TRUE)
 ## Day_of_Week5 and Day_of_Week6:
 **Significant negative effects, indicating that NO2 levels are lower on these days compared to the reference day**
 
+## Kfold cross-validation 
+** This step is implemented to evaluate the performance of a machine learning model and ensure that it is not overfitting.**
+```{r}
+set.seed(123)
+library(caret)
+data_2020 = data_2020
+
+# Define control method for 4-fold CV
+control <- trainControl(method = "cv", number = 4)
+
+# Train the model with linear regression
+model_kfold_2020 <- train(NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week  , data = data_2020, method = "lm", trControl = control)
+
+# Print the results, including RMSE
+print(model_kfold_2020)
+```
+
+<img width="314" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/2c85b4d2-24f9-49d9-987b-72bb85b9a67c">
+
+## Rndom Foretst:
+```{r}
+
+# Creating indices for the train set
+trainIndex <- createDataPartition(data_2020$NO2, p = 0.75, list = FALSE, times = 1)
+
+# Create the training data and testing data
+trainData <- data_2020[trainIndex, ]
+testData <- data_2020[-trainIndex, ]
+
+library(randomForest)
+# Create the random forest model
+rf_model_2020 <- randomForest(NO2 ~  parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = trainData, ntree = 100, mtry = 3, importance = TRUE)
 
 
+print(rf_model_2020)
+
+```
+
+<img width="579" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/2cc4e2b0-4f60-40aa-85fa-caa467481b24">
+
+```{r}
+# Predict using the random forest model
+predictions <- predict(rf_model_2020, testData)
+
+
+
+mse <- mean((predictions - testData$NO2)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(testData$NO2 - predictions))
+print(paste("Mean Absolute Error (MAE):", mae))
+print(paste("MSE:", mse))
+print(paste("RMSE:", rmse))
+
+```
+
+<img width="478" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/4167a176-07b8-45af-8649-3adf22099006">
 
 
 **2021**
 
-**2022**
+#2021_midmar_mid april_more than 500k
 
-**2022**
+### Reading Data
+```{r}
+data_2021 <- read.csv(file = "Counties_over_500000_2021_march_april.csv")
+
+data_2021$Day_of_Week <- factor(data_2021$Day_of_Week)
+
+```
+
+
+```{r}
+data_2021<- select(data_2021,c( -X,-index))
+```
+### Correlation metric:
+```{r, fig.height=10, fig.weight=10}
+data_2021 %>% ggpairs(columns = c(3:8,2)) +
+theme_bw()
+
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/643c33dd-b821-4ac0-99a2-a5c023d5e086)
+
+### Creating the first Model including all the variables:
+
+```{r}
+
+model1_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2021)
+
+# Summary
+summary(model1_2021)
+
+```
+<img width="594" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/7eb268a3-1b45-4cbe-99e7-a9c8fbe58833">
+
+### Lets's check the model first:
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model1_2021, pch = 16, sub.caption = "")
+title(main="Diagnostics for model1_2021", outer=TRUE)
+
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/31ae67ea-0d1e-4ff3-b01c-9dda0e0fac70)
+
+### Point number21 is an influesntial point. Therefore, we exclude it from the data:
+```{r}
+data_2021 = data_2021%>% slice(-21)
+```
+
+
+### Let's exclude residential_percent_change_from_baseline from the model since it is the least significant.
+```{r}
+
+model2_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline +	Day_of_Week , data = data_2021)
+
+# Summary
+summary(model2_2021)
+
+```
+<img width="605" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/2627a583-c8e3-4798-845b-47cc09dea67a">
+
+### Let's exlude the day of week since it is the least significant:
+```{r}
+
+model3_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline  , data = data_2021)
+
+# Summary
+summary(model3_2021)
+
+```
+<img width="614" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/880534c6-2a7f-46ff-87a1-5cb3d169fa2c">
+
+
+### Let's exclude grocery_and_pharmacy_percent_change_from_baseline since it is the least significant:
+
+```{r}
+
+model4_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline  , data = data_2021)
+
+# Summary
+summary(model4_2021)
+
+```
+<img width="566" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/8054d147-6008-42f3-9a14-ad17b4e5be39">
+
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model3_2021, pch = 16, sub.caption = "")
+title(main="Diagnostics for m4", outer=TRUE)
+
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/7e12f994-e440-4da4-8646-8f31a202968c)
+
+### The model seems good since all the variables seems significant.
+
+### Seems gtreat! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid marrch to mid april for the year 2021.
+
+### 1.parks_percent_change_from_baseline
+### 2.transit_stations_percent_change_from_baseline
+### 3.residential_percent_change_from_baseline 
+### 4.workplaces_percent_change_from_baseline
+
+
+
+## Final Model 2021:
+
+#### Now, we can talk about the result of model 4 as our final model for year 2021. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
+
+#### NO2 = 0.44173 + 0.29639 × (retail_and_recreation_percent_change_from_baseline) + 0.04553 × (parks_percent_change_from_baseline) − 0.53085 × (transit_stations_percent_change_from_baseline) + 0.09487 × (workplaces_percent_change_from_baseline)
+
+## Interpratation of MLR Model4:
+
+
+#### Retail and Recreation: Each 1% increase from the baseline is associated with a 0.29639 increase in NO2 levels.
+
+#### Parks: Each 1% increase from the baseline is associated with a 0.04553 increase in NO2 levels.
+
+#### Transit Stations: Each 1% increase from the baseline is associated with a 0.53085 decrease in NO2 levels.
+
+#### Workplaces: Each 1% increase from the baseline is associated with a 0.09487 increase in NO2 levels.
+
+
+### K fold cross validation:
+```{r}
+
+# Define control method for 4-fold CV
+control <- trainControl(method = "cv", number = 4)
+
+# Train the model with linear regression
+# Replace y with your target variable, and . indicates all other variables as predictors
+model_kfold_2021 <- train(NO2 ~ retail_and_recreation_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline, data = data_2021, method = "lm", trControl = control)
+
+# Print the results, including RMSE
+print(model_kfold_2021)
+
+```
+<img width="438" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/b09793f7-b300-4c23-b498-10992bc931c4">
+
+# Let's performe random forest to compare with our model to make sure that the random forest is performing okay
+
+```{r}
+
+# Set the seed for reproducibility
+set.seed(123)
+
+
+# Create indices for the train set
+trainIndex <- createDataPartition(data_2021$NO2, p = 0.75, list = FALSE, times = 1)
+
+# Create the training data and testing data
+trainData <- data_2021[trainIndex, ]
+testData <- data_2021[-trainIndex, ]
+
+
+library(randomForest)
+# Create the random forest model
+# y is the numeric response variable and . represents all other variables in the data as predictors
+rf_model_2021 <- randomForest(NO2 ~ retail_and_recreation_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline, data = trainData, ntree = 100, mtry = 3, importance = TRUE)
+
+# Print the model summary
+print(rf_model_2021)
+
+# Plot error as trees are added
+plot(rf_model_2021)
+
+# View variable importance
+importance(rf_model_2021)
+varImpPlot(rf_model_2021)
+
+```
+<img width="526" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/1d3ff442-5e09-4ca4-b240-5f4231f00c67">
+
+```{r}
+# Predict using the random forest model
+predictions <- predict(rf_model_2021, testData)
+
+mse <- mean((predictions - testData$NO2)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(testData$NO2 - predictions))
+print(paste("Mean Absolute Error (MAE):", mae))
+print(paste("MSE:", mse))
+print(paste("RMSE:", rmse))
+```
+<img width="397" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/2e9b4342-3f66-4a49-930e-9a0458146bca">
+
+**Comparing the results, we can say that linear regression is a good model for explaining NO2.***
+
+
+#2022
+
+# 2022_midmar_mid april_more than 500k
+
+```{r}
+data_2022 <- read.csv(file = "Counties_over_500000_2022_march_april.csv")
+data_2022$Day_of_Week <- factor(data_2022$Day_of_Week)
+
+```
+
+
+```{r}
+
+data_2022<- select(data_2022, c(-X,-index))
+
+```
+
+```{r, fig.height=10, fig.weight=10}
+data_2022 %>% ggpairs(columns = c(3:8,2)) +
+theme_bw()
+
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/6433e0b2-4a3e-4478-b91a-7f4dd698aa68)
+
+```{r}
+
+model1_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2022)
+
+# Summary
+summary(model1_2022)
+
+```
+<img width="593" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/d3b82cb5-6a85-4cf6-8c16-3b129cc89a6a">
+
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model1_2022, pch = 16, sub.caption = "")
+title(main="Diagnostics for model1_2022", outer=TRUE)
+
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/d31503c8-8c40-43e4-9e93-888e4a3e4439)
+
+### Let's exlude point 32 and perform the model:
+```{r}
+data_2022 = data_2022%>% slice(-32)
+```
+
+
+# Let's exclude day of the week:
+```{r}
+
+model2_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline  , data = data_2022)
+
+# Summary
+summary(model2_2022)
+
+```
+<img width="581" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/c6201035-30ad-43f8-9281-c4b1b4a6bcdb">
+
+# let's exlude residential_percent_change_from_baseline which seems to be the least significant:
+
+```{r}
+
+model3_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline  , data = data_2022)
+
+# Summary
+summary(model3_2022)
+
+```
+<img width="584" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/49338004-f409-44f3-98f7-e4875bcdcd3a">
+
+# Lets' check the model:
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model3_2022, pch = 16, sub.caption = "")
+title(main="Diagnostics for model3_2022", outer=TRUE)
+
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/e5b9e2f0-8321-456e-821d-b1db97671a7c)
+
+
+# seem good. Let's exclude workplaces_percent_change_from_baseline  which we do not have strong evidance to include it in the model:
+```{r}
+
+model4_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline , data = data_2022)
+
+# Summary
+summary(model4_2022)
+
+```
+<img width="594" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/b0c0a45e-d5f2-4a4a-adb1-e3d525d3dd40">
+
+# Great! Lets check the model:
+
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model4_2022, pch = 16, sub.caption = "")
+title(main="Diagnostics for m4", outer=TRUE)
+
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/8873d721-c17c-451a-a8a9-13bffeeb1713)
+
+
+### The model seems good since all the variables seems significant.
+
+### It seems great! Based on the model we have now, the following variables play a significant role in explaining the NO2 for the period from mid-March to mid-April in 2022.
+
+### 1.parks_percent_change_from_baseline
+### 2.transit_stations_percent_change_from_baseline
+### 3.retail_and_recreation_percent_change_from_baseline
+
+
+
+
+## Final Model 2022:
+
+#### Now, we can talk about the result of model 4 as our final model for year 2022. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
+
+#### NO2 = -15.30 + 1.33 × (retail_and_recreation_percent_change_from_baseline) + 0.10 × (parks_percent_change_from_baseline) - 1.36 × (transit_stations_percent_change_from_baseline)
+
+## Interpratation of MLR Model4:
+
+#### Retail and Recreation: Each 1% increase from the baseline in retail and recreation activities is associated with an increase of approximately 1.33365 units in NO2 levels.
+
+### Parks: Each 1% increase from the baseline in park visits is associated with an increase of approximately 0.09555 units in NO2 levels.
+
+### Transit Stations: Each 1% decrease from the baseline in transit station traffic is associated with a decrease of approximately 1.35743 units in NO2 levels.
+
+
+## Overall F-test for model4:
+
+#### • Full Model:NO2=β0 +β1×(parks_percent_change_from_baseline)+β2×(transit_stations_percent_change_from_baseline)+β3×(retail_and_recreation_percent_change_from_baseline)
+
+#### H0 : No explanatory variables should be included in the model: β1 = β2 = · · · = βK = 0.
+
+#### HA : At least one explanatory variable should be included in the model: Not all βk’s = 0 for
+
+#### The F-statistic from your model output has a very low p-value (2.092e-08), which provides strong evidence against the null hypothesis. This confirms that at least one of the β coefficients significantly differs from 0, indicating the necessity of including these explanatory variables in the model to explain the variability in NO2 levels.
+
+#### Multiple R-squared: 0.787, implying that approximately 78.7% of the variability in NO2 levels is explained by the variations in retail and recreation, parks, transit stations.
+
+### Adjusted R-squared: 0.7542, which takes into account the number of predictors in the model and provides a more precise measure of the model's explanatory power, adjusting for the degrees of freedom.
+
+
+### Let's performe K-fold cross validation to make sure that the model is not overfitting by comparing the results:
+
+### K fold cross validation:
+```{r}
+
+# Define control method for 4-fold CV
+control <- trainControl(method = "cv", number = 4)
+
+# Training the model with linear regression
+model_kfold_2022 <- train(NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline
+               +parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline, data = data_2022, method = "lm", trControl = control)
+
+# Print the results, including RMSE
+print(model_kfold_2022)
+```
+<img width="419" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/67487be8-efa3-437d-acb9-7bdcb7aafaa9">
+
+
+### Let's perform rando forest to make sure that our linear moodel is performing good enough.
+
+```{r}
+# Creating indices for the train set
+trainIndex <- createDataPartition(data_2022$NO2, p = 0.75, list = FALSE, times = 1)
+
+# Create the training data and testing data
+trainData <- data_2022[trainIndex, ]
+testData <- data_2022[-trainIndex, ]
+
+
+library(randomForest)
+# Create the random forest model
+rf_model_2022 <- randomForest(NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline
+               +parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline, data = trainData, ntree = 100, mtry = 3, importance = TRUE)
+
+# Print the model summary
+print(rf_model_2022)
+```
+<img width="562" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/7fa127d2-7d20-49b0-840d-4288c463581b">
+
+
+```{r}
+# Predict using the random forest model
+predictions <- predict(rf_model_2022, testData)
+
+mse <- mean((predictions - testData$NO2)^2)
+rmse <- sqrt(mse)
+mae <- mean(abs(testData$NO2 - predictions))
+print(paste("Mean Absolute Error (MAE):", mae))
+print(paste("MSE:", mse))
+print(paste("RMSE:", rmse))
+
+```
+<img width="395" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/000ca961-6c48-4d19-8aa0-dd3131859973">
+
+
 
