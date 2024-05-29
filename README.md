@@ -7,7 +7,15 @@ Investigating the association between the different mobility metrics and NO2 in 
 |-----|-----|
 |1|  [ Description ](#desc)   |
 |2|   [ Summary](#meth)   |
-
+|3|    [ Data Gathering and Preparation ](#dg)   |
+|3.1.1|    [ Importing Libreries ](#ld)   |
+|3.1.2|    [ Reading and Preparing the NO2 Datasets ](#dp)   |
+|3.1.3|    [ Reading and Preparing the Mobility Datasets ](#mo)   |
+|3.1.4|    [ Merging the NO2 and Mobility Datasets ](#me1)   |
+|3.1.5|    [ Reading and Preparing the Population Dataset ](#po)   |
+|3.1.6|    [ Final Dataset ](#me2)   |
+|3.2|    [ Filtering counties with more than 500K population ](#fi)   |
+|4|   [ Visualizations ](#vs)    |
 <a name="desc"></a>
 # 1. Description
 This repository focuses on data preprocessing, visualization, and analysis of the relationship between Google Mobility data and NO2 levels. Specifically, it aims to explore how well Google Mobility data, along with the day of the week, can explain the variability in NO2 levels in counties with more than 500K population.
@@ -17,13 +25,13 @@ This repository focuses on data preprocessing, visualization, and analysis of th
 The work involves obtaining data on NO2, Google mobility data, and population data, and merging them on their primary keys, which consist of the date, county name, and state name. The collected data is then preprocessed. Data cleaning, outlier handling, and missing values are addressed. Then, counties with populations greater than 500,000 are filtered for further visualization. Based on the visualization, data from mid-March to mid-April is observed to experience the same decline in NO2 levels as was seen in the same period in 2020. Therefore, a linear model is built to compare the data for the same period in 2020, 2021, and 2022. A random forest model is also used on the data to ensure that our results from the linear model are reliable. Additionally, k-fold cross-validation is employed to ensure that the linear model is not overfitting.
 
 <a name="dg"></a>
-# 3 Data Gathering and Prepration
-Data Sources: Google Mobility data from google website, NO2 emission from EPA website along with the population information
+# 3 Data Gathering and Preparation
+Data Sources: Google Mobility data from the Google website, NO2 emission from the EPA website along with the population information
 Independent Variables: Google Mobility data metrics and the day of the week.
 Response Variable: NO2 levels.
 
 <a name="ld"></a>
-# 3.1.1 Importing Datasets
+# 3.1.1 Importing Libreries
 
 **Libraries:**
 In This project different libraries are being used. Some packages that are use in the preprocessing step is imported here:
@@ -35,30 +43,31 @@ import matplotlib.dates as mdates
 
 ```
 
-
 **All data sets are read and converted to a data frame format from CSV files using **pandas**:**
+<a name="dp"></a>
+# 3.1.2 Reading and Preparing the NO2 Datasets
 
-**NO2 data for the years 2020, 2021, and 2022 is read using pandas :**
+**NO2 data for the years 2020, 2021, and 2022 is read using pandas:**
 ```python
 data1 = pd.read_csv('daily_42602_2020.csv')
 data2 = pd.read_csv('daily_42602_2021.csv')
 data3 = pd.read_csv('daily_42602_2022.csv')
 ```
 
-**No2 data of those 3 years are concatinated and added to each other:**
+**No2 data of those 3 years are concatenated and added to each other:**
 ```python 
 x = pd.concat([data1, data2], axis=0)
 
 d_p= pd.concat([x, data3], axis=0)
 ```
-**The required columns are selected for furthur analysis:**
+**The required columns are selected for further analysis:**
 ```python 
 d_p=d_p[['Date Local','State Name','County Name','Arithmetic Mean']]
 
 # Convert 'Date Local' to datetime format
 d_p['Date Local'] = pd.to_datetime(d_p['Date Local'])
 
-#Taking average of NO2 for each day and each county:
+#Taking the average of NO2 for each day and each county:
 d_p = d_p.groupby(['Date Local', 'State Name', 'County Name'])['Arithmetic Mean'].mean().reset_index()
 
 # Rename the aggregated column for clarity:
@@ -67,7 +76,10 @@ d_p
 ```
 <img width="322" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/721086a0-95e2-48f9-a527-80aff8adb63f">
 
-**Mobility data for the years 2020, 2021, and 2022 is read, concatinated using pandas, and then needed columns are selected for furthur analysis :**
+<a name="mo"></a>
+# 3.1.3 Reading and Preparing the Mobility Datasets
+
+**Mobility data for the years 2020, 2021, and 2022 is read and concatenated using pandas, and then needed columns are selected for further analysis:**
 ```python 
 d1 = pd.read_csv('2020_US_Region_Mobility_Report.csv')
 d2 = pd.read_csv('2021_US_Region_Mobility_Report.csv')
@@ -91,15 +103,15 @@ d_m['residential_percent_change_from_baseline'] = d_m['residential_percent_chang
 d_m
 
 ```
-
-
-**Combining NO2 and Mobility Data:(Merging on the primary key which is the vombinamtion of Date, County and State Name)**
+<a name="me1"></a>
+# 3.1.4 Merging the NO2 and Mobility Datasets
+**Combining NO2 and Mobility Data:(Merging on the primary key which is the combination of Date, County and State Name)**
 ```python
-# Changing the name of dataframes for easier use
+# Changing the name of data frames for easier use
 no2_df=d_p
 mobility_df=d_m
 
-# Adjust the date columns in both dataframes to ensure they are in datetime format for accurate merging
+# Adjust the date columns in both dataframes to ensure they are in DateTime format for accurate merging
 no2_df['Date Local'] = pd.to_datetime(no2_df['Date Local'])
 mobility_df['date'] = pd.to_datetime(mobility_df['date'])
 
@@ -112,10 +124,11 @@ mobility_df['County Name'] = mobility_df['County Name'].str.replace(' County', '
 # Perform the merge (inner join) on the corrected date, county, and state columns
 corrected_merged_df = pd.merge(no2_df, mobility_df, how='inner', on=['Date Local', 'State Name', 'County Name'])
 
-# Display the first few rows f merged data:
+# Display the first few rows of merged data:
 corrected_merged_df.head()
 ```
-
+<a name="po"></a>
+# 3.1.5 Reading and Preparing the Population Dataset
 **Adding Population data to our merged data:**
 ```python
 df = pd.read_csv('cc-est2022-agesex-all.csv')
@@ -128,10 +141,15 @@ grouped_mean = df.groupby(['CTYNAME', 'STNAME'])['POPESTIMATE'].mean().reset_ind
 grouped_mean.rename(columns={'CTYNAME': 'County Name', 'STNAME': 'State Name'}, inplace=True)
 grouped_mean
 ```
+<a name="me2"></a>
+# 3.1.6 Final Dataset
+
 **Merging population data with our previous data by doing left join on the combination of county and state:**
 ```python
 data = pd.merge(corrected_merged_df, grouped_mean, how='left', on=['State Name', 'County Name'])
 ```
+<a name="fi"></a>
+# 3.2  Filtering counties with more than 500K population
 **Categorizing the data into three categories of the population that they are located in:** 
 ```python
 data['Date Local'] = pd.to_datetime(data['Date Local'])
@@ -143,7 +161,9 @@ Counties_over_500000=data[data['POPESTIMATE']>=500000]
 # Resetting the index:
 Counties_over_500000.reset_index(inplace=True)
 ```
-**Aggregate data weekly toreduce the noise and to be able to gain some information basd on the visualization:**
+<a name="vs"></a>
+# 4 Preparing data for the Visualizations
+**Aggregate data weekly to reduce the noise and to be able to gain some information basd on the visualization:**
 ```python
 # Calculate weekly average for specified columns
 Counties_over_500000['Date Local'] = pd.to_datetime(Counties_over_500000['Date Local'])
