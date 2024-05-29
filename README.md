@@ -162,10 +162,14 @@ Counties_over_500000=data[data['POPESTIMATE']>=500000]
 Counties_over_500000.reset_index(inplace=True)
 ```
 <a name="vs"></a>
-# 4 Preparing data for the Visualizations
-**Aggregate data weekly to reduce the noise and to be able to gain some information basd on the visualization:**
+# 4 Visualizations
+
+<a name="vs1"></a>
+# 4 Visualizations
+
+**Aggregate data weekly to reduce the noise and to be able to gain some information based on the visualization:**
 ```python
-# Calculate weekly average for specified columns
+# Calculate the weekly average for specified columns
 Counties_over_500000['Date Local'] = pd.to_datetime(Counties_over_500000['Date Local'])
 Counties_over_500000.set_index('Date Local', inplace=True)
 weekly_means = Counties_over_500000[['NO2','retail_and_recreation_percent_change_from_baseline', 'grocery_and_pharmacy_percent_change_from_baseline',	'parks_percent_change_from_baseline',	'transit_stations_percent_change_from_baseline' ,	'workplaces_percent_change_from_baseline',	'residential_percent_change_from_baseline' ]].resample('W').mean()
@@ -173,8 +177,9 @@ weekly_means = Counties_over_500000[['NO2','retail_and_recreation_percent_change
 weekly_means.index = pd.to_datetime(weekly_means.index)
 ```
 
-
-### Visualizing weekly average of NO2 for counties with more than 500K population:(It is worth mentioning that the visualization is for the period in which we had the information for mobility as well since we did the inner join.)
+<a name="vs1"></a>
+# 4.1 Visualizing NO2 Data
+#### Visualizing weekly average of NO2 for counties with more than 500K population:(It is worth mentioning that the visualization is for the period in which we had the information for mobility as well since we did the inner join.)
 ```python
 # Set the aesthetic style of the plots
 sns.set_style("whitegrid")
@@ -209,7 +214,23 @@ plt.xticks(rotation=45)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/901d8c3c-2f52-411b-bfb4-1725b2129e81)
 
+### Visualizing the NO2 Data for the period of mid march to mid April 2020:
+<img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/e1ca79c0-e075-41f8-9b7f-789a658b2010">
 
+
+
+
+
+
+### Visualizing the NO2 Data for the period of mid march to mid april 2021:
+
+<img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/6ee8d5d3-ff74-43d3-8f69-a65660788567">
+
+
+
+### Visualizing the NO2 Data for the period of mid march to mid april 2022:
+
+<img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/8c0c0a87-27ec-4c15-968e-7bdbe55b980e">
 
 **Visualizing all the mobility variables over time in the same graph:**
 ```python
@@ -473,6 +494,15 @@ plt.tight_layout()
 plt.show()
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/73728c96-380e-4d8b-a7a4-c5c0fb3d9746)
+
+### As an instant I brought Mobility data on the map and the distribution of that for different states located in different counties:
+<img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/66c2d876-bbe2-46bf-b29c-855fbe8d0d99">
+
+
+
+
+
+
 
 
 **Note:From the visualization, the period of mid-March to mid-April is selected for further analysis**
