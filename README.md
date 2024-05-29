@@ -493,4 +493,192 @@ df_3.reset_index(inplace=True)
 df_3['Day_of_Week'] = df_3['Date Local'].dt.dayofweek
 df_3.to_csv('Counties_over_500000_2022_march_april.csv')
 ```
+**Read data that became ready from Python for the year 2020 for counties with more than 500,000 population from mid-March to mid-April:**
+
+**2020**
+```{r}
+data_2020 <- read.csv(file = "Counties_over_500000_2020_march_april.csv")
+
+#converting day of week to factor so that R can consider it as categorical variable:
+data_2020$Day_of_Week <- factor(data_2020$Day_of_Week)
+```
+**Data Summary:**
+```{r}
+summary(data_2020)
+```
+<img width="575" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/4a2fedf3-bdea-43cf-9124-144c264fcba3">
+
+### Corrolation Matrix:
+```{r, fig.height=10, fig.weight=10}
+data_2020 %>% ggpairs(columns = c(3:8,2)) +
+theme_bw()
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/7b9b4a6e-746c-4281-a1a7-9c3d32f1289a)
+
+
+
+### The correlation between No2 and the independent variables can be seen in the above matrix.From the plots it can be seen that the linear relationship exist between the dependent and independent variables
+
+**Parks and NO2: The correlation between park mobility and NO2 is weaker (0.294), suggesting less direct impact of park visitation on NO2 levels compared to other activities.**
+
+**Transit Stations and NO2: Transit mobility has a stronger correlation with NO2 (0.483), which aligns with the notion that increased use of transit systems might lead to higher NO2 emissions.**
+
+**Workplaces and NO2: Workplace mobility changes have a moderate positive correlation with NO2 (0.517), implying that more people at work might contribute to increased NO2 levels, possibly due to commuting.**
+
+**Residential and NO2: There's a negative correlation (-0.734) between residential mobility and NO2, indicating that higher stay-at-home measures might reduce NO2 levels.**
+
+**NO2 and Recreation: The correlation between NO2 levels and recreation mobility changes is 0.482. This moderate positive correlation suggests that increased recreational activities are associated with higher NO2 levels. This could be due to increased vehicle emissions when people travel to recreational locations.**
+
+**NO2 and Pharmacy: The correlation between NO2 levels and pharmacy mobility changes is 0.483. This moderate positive correlation indicates that higher visits to pharmacies are associated with higher NO2 levels.**
+
+
+**Creating the first Model for the year 2020 including all the variables:**
+
+```{r}
+
+model1_2020 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model1_2020)
+
+```
+<img width="574" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/5c27c5c8-5175-4b87-84a4-3395030dc93a">
+
+### Coefficients:
+**Intercept: Estimate = 11.83834, Std. Error = 2.75077, t value = 4.304, Pr(>|t|) = 0.000383, indicating the baseline NO2 level when all predictors are zero.**
+
+**Retail and Recreation: Estimate = 0.01069, Std. Error = 0.09012, t value = 0.119, Pr(>|t|) = 0.906865, not statistically significant.**
+
+**Grocery and Pharmacy: Estimate = -0.04130, Std. Error = 0.06432, t value = -0.642, Pr(>|t|) = 0.528445, not statistically significant.**
+
+**Parks: Estimate = 0.06483, Std. Error = 0.01952, t value = 3.321, Pr(>|t|) = 0.003590, statistically significant with a positive effect, indicating higher park mobility is associated with increased NO2 levels.**
+
+**Transit Stations: Estimate = -0.30876, Std. Error = 0.14284, t value = -2.161, Pr(>|t|) = 0.043635, statistically significant with a negative effect, suggesting increased transit station mobility is associated with decreased NO2 levels.**
+
+**Workplaces: Estimate = 0.09311, Std. Error = 0.12660, t value = 0.735, Pr(>|t|) = 0.471048, not statistically significant.**
+
+**Residential: Estimate = -0.67997, Std. Error = 0.24151, t value = -2.816, Pr(>|t|) = 0.011043, statistically significant with a negative effect, indicating increased residential mobility (more staying at home) is associated with lower NO2 levels.**
+
+**Day_of_Week1: Estimate = 1.37066, Std. Error = 0.74935, t value = 1.829, Pr(>|t|) = 0.08312, marginally significant.
+Day_of_Week2: Estimate = 1.60718, Std. Error = 0.78347, t value = 2.052, Pr(>|t|) = 0.054276, marginally significant.
+Day_of_Week3: Estimate = 1.18909, Std. Error = 0.82862, t value = 1.435, Pr(>|t|) = 0.167536, not statistically significant.
+Day_of_Week4: Estimate = 1.77416, Std. Error = 1.21835, t value = 1.456, Pr(>|t|) = 0.161667, not statistically significant.
+Day_of_Week5: Estimate = -5.19269, Std. Error = 1.44420, t value = -3.596, Pr(>|t|) = 0.001928, statistically significant with a negative effect.
+Day_of_Week6: Estimate = -8.29014, Std. Error = 1.63449, t value = -5.072, Pr(>|t|) = 6.77e-05, statistically significant with a strong negative effect.**
+
+### Checking the linear model conditions to see if they are met using the diagnostic plot:"**
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model1_2020, pch = 16, sub.caption = "")
+title(main="Diagnostics for model1_2020", outer=TRUE)
+
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/1f954644-b099-4467-86be-da1f6b93f6ad)
+
+**It seems the point 1 is somehow influential since it has high leverage and the cook's D ri in the border of 1**
+### excluding point 1 from the data:
+
+```{r}
+data_2020 <- data_2020%>% slice(-1)
+```
+
+**Conducting the previous model after slicing point 1:**
+
+```{r}
+model1_2020 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model1_2020)
+
+```
+# Backwars elimination:
+** We do feature selection using Backward elimination method which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.**
+
+### Removing retail_and_recreation_percent_change_from_baseline (p = 0.906865)- That has the highest p-value:
+```{r}
+model2_2020 <- lm( NO2 ~ grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model2_2020)
+
+```
+<img width="575" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/08d5ae8c-7011-4905-826f-8522b2c22bc7">
+### Checking for the diagnostic plot:
+
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/cf65448b-2bc9-489f-90de-808b9d4a8217)
+
+
+### Next step in doing backward elimination: excluding 'grocery_and_pharmacy_percent_change_from_baseline' that has comparably higher p-value than the other variables:
+
+```{r}
+model3_2020 <- lm( NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model3_2020)
+
+```
+<img width="537" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/4e3235cd-9205-4522-8a47-9e4ff2a598f4">
+### checking for the condition:
+
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model3_2020, pch = 16, sub.caption = "")
+title(main="Diagnostics for model3_2020", outer=TRUE)
+
+```
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/effda9ae-062a-49aa-ad02-cc4720bd0bb8)
+
+
+
+
+### Next step in doing backward elimination: excluding 'workplaces_percent_change_from_baseline' that has a comparably higher p-value than the other variables:
+
+```{r}
+model4_2020 <- lm( NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
+
+# Summary
+summary(model4_2020)
+
+```
+<img width="619" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/59de84cc-5baf-4b76-b889-5610a6d1f64a">
+### Some days seem to be significant, and the others seem not. for those days that are significant, the intercept would be different
+
+### Lets check the model:
+```{r}
+par(mfrow = c(2,2), oma = c(0,0,2,0))
+plot(model4_2020, pch = 16, sub.caption = "")
+title(main="Diagnostics for model4_2020", outer=TRUE)
+
+```
+
+![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/08a9c823-bb30-4100-94ac-e55232b0c2d5)
+
+# Significant Predictors:
+
+## Parks Mobility: 
+**Significant positive effect, suggesting that increases in park mobility are associated with higher NO2 levels.**
+#### For a 1 percent from baseline increase in parks_percent_change_from_baseline, we estimate the mean of NO2 percentage increase by 0.06593 after controlling for transit station, residential mobilities, and days of the week.
+
+## Transit Stations Mobility:
+**Significant negative effect, indicating that increased transit station mobility is associated with lower NO2 levels.**
+
+#### For a 1 percent increase from baseline in transit stations percent change, we estimate the mean of NO2 percentage to decrease by 0.37814, after controlling for  parks, residential mobilities, and days of the week.
+
+
+## Residential Mobility:
+**Significant negative effect, showing that more time spent at home is associated with lower NO2 levels.**
+#### For a 1 percent increase from baseline in residential percent change, we estimate the mean of NO2 percentage to decrease by  0.95633, after controlling for   parks, transit station mobilities, and days of the week
+
+## Day_of_Week5 and Day_of_Week6:
+**Significant negative effects, indicating that NO2 levels are lower on these days compared to the reference day**
+
+
+
+
+
+**2021**
+
+**2022**
+
+**2022**
 
