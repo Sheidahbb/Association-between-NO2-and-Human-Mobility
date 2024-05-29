@@ -16,6 +16,9 @@ Investigating the association between the different mobility metrics and NO2 in 
 |3.1.6|    [ Final Dataset ](#me2)   |
 |3.2|    [ Filtering counties with more than 500K population ](#fi)   |
 |4|   [ Visualizations ](#vs)    |
+|4.1|   [ NO2 Visualizations ](#vs-NO2)    |
+|4.2|   [ Mobility Visualizations ](#vs-Mobility)    |
+
 <a name="desc"></a>
 # 1. Description
 This repository focuses on data preprocessing, visualization, and analysis of the relationship between Google Mobility data and NO2 levels. Specifically, it aims to explore how well Google Mobility data, along with the day of the week, can explain the variability in NO2 levels in counties with more than 500K population.
@@ -177,8 +180,8 @@ weekly_means = Counties_over_500000[['NO2','retail_and_recreation_percent_change
 weekly_means.index = pd.to_datetime(weekly_means.index)
 ```
 
-<a name="vs1"></a>
-# 4.1 Visualizing NO2 Data
+<a name="vs-NO2"></a>
+# 4.1 NO2 Visualizations vs-NO2
 #### Visualizing weekly average of NO2 for counties with more than 500K population:(It is worth mentioning that the visualization is for the period in which we had the information for mobility as well since we did the inner join.)
 ```python
 # Set the aesthetic style of the plots
@@ -231,7 +234,8 @@ plt.xticks(rotation=45)
 ### Visualizing the NO2 Data for the period of mid march to mid april 2022:
 
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/8c0c0a87-27ec-4c15-968e-7bdbe55b980e">
-
+<a name="vs-Mobility"></a>
+# 4.2 Mobility Visualizations 
 **Visualizing all the mobility variables over time in the same graph:**
 ```python
 plt.figure(figsize=(14, 6))
@@ -497,10 +501,6 @@ plt.show()
 
 ### As an instant I brought Mobility data on the map and the distribution of that for different states located in different counties:
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/66c2d876-bbe2-46bf-b29c-855fbe8d0d99">
-
-
-
-
 
 
 
