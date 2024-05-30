@@ -37,7 +37,8 @@ Evaluating Changes in NO2 Levels in Response to Mobility Insights from Mid-March
 
 <a name="desc"></a>
 # 1. Description
-This repository focuses on data preprocessing, visualization, and analysis of the relationship between Google Mobility data and NO2 levels. Specifically, it aims to explore how well Google Mobility data, along with the day of the week, can explain the variability in NO2 levels in counties with more than 500K population.
+
+This project focuses on data preprocessing, visualization, and analysis to evaluate the relationship between Google Mobility data and NO2 levels across U.S. counties with populations exceeding 500,000. Specifically, it aims to explore how well Google Mobility data, along with the day of the week, can explain the variability in NO2 levels during the period from mid-March to mid-April for the years 2020, 2021, and 2022. 
 
 <a name="meth"></a>
 # 2. Summary
