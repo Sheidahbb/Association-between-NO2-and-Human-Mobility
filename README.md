@@ -1031,7 +1031,7 @@ theme_bw()
 <a name="model_2022_2"></a>
 # 6.3.2 Complete MLR:
 
-### Here is the Multiple Linear Regression Model for 2022 data from mid-March to mid-April for counties with more than 500K population(Considering all the mobility variables as well as the day of the week as the independent variable).
+### Here is the Multiple Linear Regression Model, including all the variables, for 2022 data from mid-March to mid-April for counties with more than 500K population(Considering all the mobility variables as well as the day of the week as the independent variable).
 ```{r}
 model1_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2022)
 
@@ -1041,6 +1041,7 @@ summary(model1_2022)
 ```
 <img width="593" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/d3b82cb5-6a85-4cf6-8c16-3b129cc89a6a">
 
+### Checking for the conditions using the diagnostic plot:
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model1_2022, pch = 16, sub.caption = "")
@@ -1048,13 +1049,15 @@ title(main="Diagnostics for model1_2022", outer=TRUE)
 
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/d31503c8-8c40-43e4-9e93-888e4a3e4439)
+### As it can be seen, point 32 is an influential point and violates the LR condition; therefore, we need to exclude it.
 
-### Let's exclude point 32 and perform the model:
+## Excluding point 32 which is an influential point:
 ```{r}
 data_2022 = data_2022%>% slice(-32)
 ```
 <a name="model_2022_3"></a>
 # 6.3.1 Backward elimination:
+**We do feature selection using the Backward elimination method, which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.**
 
 ### At this step day of the week is excluded since pretty much all of them are not significant(very high p-value:
 ```{r}
