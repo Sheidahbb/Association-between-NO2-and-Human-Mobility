@@ -599,7 +599,7 @@ theme_bw()
 
 
 
-### The correlation between No2 and the independent variables can be seen in the above matrix.From the plots it can be seen that the linear relationship exist between the dependent and independent variables
+### The correlation between No2 and the independent variables can be seen in the above matrix. From the plots, it can be seen that the linear relationship exist between the dependent and independent variables
 
 **Parks and NO2:** The correlation between park mobility and NO2 is weaker (0.294), suggesting less direct impact of park visitation on NO2 levels compared to other activities.**
 
@@ -664,19 +664,11 @@ title(main="Diagnostics for model1_2020", outer=TRUE)
 data_2020 <- data_2020%>% slice(-1)
 ```
 
-**Conducting the previous model after slicing point 1:**
 
-```{r}
-model1_2020 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
-
-# Summary
-summary(model1_2020)
-
-```
 # Backwars elimination:
-** We do feature selection using Backward elimination method which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.**
+We perform feature selection using the Backward elimination method, which helps identify the most significant predictors and simplify the model. Therefore, we will end up with a model that is easier to interpret and potentially more robust.
 
-### Removing retail_and_recreation_percent_change_from_baseline (p = 0.906865)- That has the highest p-value:
+Removing retail_and_recreation_percent_change_from_baseline (p = 0.906865)- That has the highest p-value:
 ```{r}
 model2_2020 <- lm( NO2 ~ grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
 
@@ -690,7 +682,7 @@ summary(model2_2020)
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/cf65448b-2bc9-489f-90de-808b9d4a8217)
 
 
-### Next step in doing backward elimination: excluding 'grocery_and_pharmacy_percent_change_from_baseline' that has comparably higher p-value than the other variables:
+Next step in doing backward elimination: excluding 'grocery_and_pharmacy_percent_change_from_baseline' that has comparably higher p-value than the other variables:
 
 ```{r}
 model3_2020 <- lm( NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
@@ -713,7 +705,7 @@ title(main="Diagnostics for model3_2020", outer=TRUE)
 
 
 
-### Next step in doing backward elimination: excluding 'workplaces_percent_change_from_baseline' that has a comparably higher p-value than the other variables:
+Next step in doing backward elimination: excluding 'workplaces_percent_change_from_baseline' that has a comparably higher p-value than the other variables:
 
 ```{r}
 model4_2020 <- lm( NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
@@ -725,7 +717,7 @@ summary(model4_2020)
 <img width="619" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/59de84cc-5baf-4b76-b889-5610a6d1f64a">
 ### Some days seem to be significant, and the others seem not. for those days that are significant, the intercept would be different
 
-### Lets check the model:
+Lets check the model:
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model4_2020, pch = 16, sub.caption = "")
@@ -755,7 +747,7 @@ title(main="Diagnostics for model4_2020", outer=TRUE)
 **Significant negative effects, indicating that NO2 levels are lower on these days compared to the reference day**
 
 ## Kfold cross-validation 
-** This step is implemented to evaluate the performance of a machine learning model and ensure that it is not overfitting.**
+This step is implemented to evaluate the performance of a machine learning model and ensure that it is not overfitting.
 ```{r}
 set.seed(123)
 library(caret)
@@ -815,7 +807,7 @@ print(paste("RMSE:", rmse))
 <a name="model_2021"></a>
 # 6.2. 2021
 
-### Reading Data
+Reading Data:
 ```{r}
 data_2021 <- read.csv(file = "Counties_over_500000_2021_march_april.csv")
 
@@ -828,7 +820,7 @@ data_2021$Day_of_Week <- factor(data_2021$Day_of_Week)
 data_2021<- select(data_2021,c( -X,-index))
 ```
 <a name="model_2022_1"></a>
-### Correlation metric:
+# 6.3.1 Correlation metric:
 ```{r, fig.height=10, fig.weight=10}
 data_2021 %>% ggpairs(columns = c(3:8,2)) +
 theme_bw()
@@ -860,19 +852,19 @@ title(main="Diagnostics for model1_2021", outer=TRUE)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/31ae67ea-0d1e-4ff3-b01c-9dda0e0fac70)
 
-### As can be seen, point 21 is influential and violates the LR condition; therefore, we need to exclude it.
+As can be seen, point 21 is influential and violates the LR condition; therefore, we need to exclude it.
 
-## Excluding point 21 which is an influential point:
+Excluding point 21 which is an influential point:
 ```{r}
 data_2021 = data_2021%>% slice(-21)
 ```
 
-<a name="model_2022_3"></a>
-# 6.3.1 Backward elimination:
+<a name="model_2021_2"></a>
+# 6.2.2 Backward elimination:
 
 **We do feature selection using the Backward elimination method, which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.**
 
-### Let's exclude residential_percent_change_from_baseline from the model since it is the least significant.
+Let's exclude residential_percent_change_from_baseline from the model since it is the least significant.
 
 ```{r}
 
@@ -884,7 +876,7 @@ summary(model2_2021)
 ```
 <img width="605" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/2627a583-c8e3-4798-845b-47cc09dea67a">
 
-### Let's exlude the day of week since it is the least significant:
+Let's exclude the day of the week since it is the least significant:
 ```{r}
 
 model3_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline  , data = data_2021)
@@ -896,7 +888,7 @@ summary(model3_2021)
 <img width="614" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/880534c6-2a7f-46ff-87a1-5cb3d169fa2c">
 
 
-### Let's exclude grocery_and_pharmacy_percent_change_from_baseline since it is the least significant:
+Let's exclude grocery_and_pharmacy_percent_change_from_baseline since it is the least significant:
 
 ```{r}
 
@@ -916,36 +908,35 @@ title(main="Diagnostics for m4", outer=TRUE)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/7e12f994-e440-4da4-8646-8f31a202968c)
 
-### The model seems good since all the variables seems significant.
+The model seems good since all the variables seems significant.
 
-### Seems gtreat! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid marrch to mid april for the year 2021.
+Seems great! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid-March to mid-April for the year 2021.
 
-### 1.parks_percent_change_from_baseline
-### 2.transit_stations_percent_change_from_baseline
-### 3.residential_percent_change_from_baseline 
-### 4.workplaces_percent_change_from_baseline
+1.parks_percent_change_from_baseline
+2.transit_stations_percent_change_from_baseline
+3.residential_percent_change_from_baseline 
+4.workplaces_percent_change_from_baseline
 
+<a name="model_2021_3"></a>
+# 6.2.3 Final Model 2021:
 
+Now, we can talk about the result of model 4 as our final model for year 2021. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
 
-## Final Model 2021:
-
-#### Now, we can talk about the result of model 4 as our final model for year 2021. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
-
-#### NO2 = 0.44173 + 0.29639 × (retail_and_recreation_percent_change_from_baseline) + 0.04553 × (parks_percent_change_from_baseline) − 0.53085 × (transit_stations_percent_change_from_baseline) + 0.09487 × (workplaces_percent_change_from_baseline)
+NO2 = 0.44173 + 0.29639 × (retail_and_recreation_percent_change_from_baseline) + 0.04553 × (parks_percent_change_from_baseline) − 0.53085 × (transit_stations_percent_change_from_baseline) + 0.09487 × (workplaces_percent_change_from_baseline)
 
 ## Interpratation of MLR Model4:
 
 
-#### Retail and Recreation: Each 1% increase from the baseline is associated with a 0.29639 increase in NO2 levels.
+**Retail and Recreation:** Each 1% increase from the baseline is associated with a 0.29639 increase in NO2 levels.
 
-#### Parks: Each 1% increase from the baseline is associated with a 0.04553 increase in NO2 levels.
+**Parks:** Each 1% increase from the baseline is associated with a 0.04553 increase in NO2 levels.
 
-#### Transit Stations: Each 1% increase from the baseline is associated with a 0.53085 decrease in NO2 levels.
+**Transit Stations:** Each 1% increase from the baseline is associated with a 0.53085 decrease in NO2 levels.
 
-#### Workplaces: Each 1% increase from the baseline is associated with a 0.09487 increase in NO2 levels.
+**Workplaces:** Each 1% increase from the baseline is associated with a 0.09487 increase in NO2 levels.
 
-
-### K fold cross validation:
+<a name="model_2021_4"></a>
+# 6.2.4 K-fold cross-validation:
 ```{r}
 
 # Define control method for 4-fold CV
@@ -961,7 +952,9 @@ print(model_kfold_2021)
 ```
 <img width="438" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/b09793f7-b300-4c23-b498-10992bc931c4">
 
-# Let's performe random forest to compare with our model to make sure that the random forest is performing okay
+<a name="model_2021_5"></a>
+# 6.2.5. Random Forest:
+Performing random forest to compare with our model to make sure that the random forest is performing okay
 
 ```{r}
 
@@ -1055,14 +1048,14 @@ title(main="Diagnostics for model1_2022", outer=TRUE)
 
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/d31503c8-8c40-43e4-9e93-888e4a3e4439)
-As it can be seen, point 32 is an influential point and violates the LR condition; therefore, we need to exclude it.
+As can be seen, point 32 is influential and violates the LR condition; therefore, we need to exclude it.
 
-## Excluding point 32 which is an influential point:
+Excluding point 32 which is an influential point:
 ```{r}
 data_2022 = data_2022%>% slice(-32)
 ```
 <a name="model_2022_3"></a>
-# 6.3.1 Backward elimination:
+# 6.3.3 Backward elimination:
 **We do feature selection using the Backward elimination method, which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.**
 
 At this step day of the week is excluded since pretty much all of them are not significant(very high p-value:
@@ -1088,7 +1081,7 @@ summary(model3_2022)
 ```
 <img width="584" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/49338004-f409-44f3-98f7-e4875bcdcd3a">
 
-### Checking the model using the diagnostic plot
+Checking the model using the diagnostic plot
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model3_2022, pch = 16, sub.caption = "")
@@ -1123,7 +1116,7 @@ title(main="Diagnostics for m4", outer=TRUE)
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/8873d721-c17c-451a-a8a9-13bffeeb1713)
 
 
-### The model seems good and all the following variables are significant.
+The model seems good and all the following variables are significant.
 
 1.parks_percent_change_from_baseline
 2.transit_stations_percent_change_from_baseline
@@ -1175,7 +1168,7 @@ print(model_kfold_2022)
 <img width="419" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/67487be8-efa3-437d-acb9-7bdcb7aafaa9">
 
 <a name="model_2022_6"></a>
-# 6.3.3 2022_Random Forest:
+# 6.3.6 2022_Random Forest:
 ### Let's perform random forest to make sure that our linear model is performing well enough.
 
 ```{r}
