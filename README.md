@@ -804,6 +804,8 @@ print(paste("RMSE:", rmse))
 
 <img width="478" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/4167a176-07b8-45af-8649-3adf22099006">
 
+**Result:** Our comparative analysis of predictive models for NO2 levels in 2020 indicates that the performance of the linear model is very similar to that of the random forest model in terms of accuracy, with MAE and RMSE values of 0.89 and 1.11 for the linear model, compared to 0.88 and 1.13 for the random forest, respectively. However, the linear model offers a significant advantage in terms of interpretability, enabling us to explicitly assess the impact of various predictors on NO2 levels. This clarity is invaluable for understanding the specific contributions of individual factors, providing a clear advantage over the less transparent random forest model. 
+
 
 <a name="model_2021"></a>
 # 6.2. 2021
@@ -999,7 +1001,7 @@ print(paste("RMSE:", rmse))
 ```
 <img width="397" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/2e9b4342-3f66-4a49-930e-9a0458146bca">
 
-**Comparing the results, we can say that linear regression is a good model for explaining NO2.***
+**Result:** In 2021, the linear model outperformed the random forest model with MAE and RMSE values of 0.86 and 1.02, respectively, compared to 1.13 and 1.60 for the random forest. Given the linear model's superior performance and interpretability, as discussed above, it is logical to prefer the linear model for analyzing NO2 levels.
 
 <a name="model_2022"></a>
 # 6.3. 2022
@@ -1199,6 +1201,8 @@ print(paste("RMSE:", rmse))
 
 ```
 <img width="395" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/000ca961-6c48-4d19-8aa0-dd3131859973">
+
+**Result:**In 2022, consistent with previous years, the linear model again demonstrated better performance, with MAE and RMSE values of 1.02 and 1.23, respectively, compared to 1.31 and 2.06 for the random forest. This further underscores the reliability of the linear model, in addition to its interpretability, making it a dependable choice for ongoing and future analyses.
 
 <a name="conclusion"></a>
 # 7. Conclusion and summarizing:
