@@ -717,7 +717,7 @@ summary(model4_2020)
 <img width="619" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/59de84cc-5baf-4b76-b889-5610a6d1f64a">
 Some days seem to be significant, and others seem not. for those days that are significant, the intercept would be different
 
-Let's check the model:
+Checking the model:
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model4_2020, pch = 16, sub.caption = "")
@@ -852,7 +852,7 @@ summary(model1_2021)
 ```
 <img width="594" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/7eb268a3-1b45-4cbe-99e7-a9c8fbe58833">
 
-Lets's check the model first:
+Check the model first:
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model1_2021, pch = 16, sub.caption = "")
@@ -873,7 +873,7 @@ data_2021 = data_2021%>% slice(-21)
 
 We do feature selection using the Backward elimination method, which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.
 
-Let's exclude residential_percent_change_from_baseline from the model since it is the least significant.
+Excluding residential_percent_change_from_baseline from the model since it is the least significant.
 
 ```{r}
 
