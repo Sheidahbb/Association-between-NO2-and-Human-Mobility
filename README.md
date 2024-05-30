@@ -571,9 +571,12 @@ df_3.reset_index(inplace=True)
 df_3['Day_of_Week'] = df_3['Date Local'].dt.dayofweek
 df_3.to_csv('Counties_over_500000_2022_march_april.csv')
 ```
-**Read data that became ready from Python for the year 2020 for counties with more than 500,000 population from mid-March to mid-April:**
 
-**2020**
+<a name="model_2020"></a>
+# 6.1. 2020
+
+Reading data that became ready from Python for the year 2020 for counties with more than 500,000 population from mid-March to mid-April:*
+
 ```{r}
 data_2020 <- read.csv(file = "Counties_over_500000_2020_march_april.csv")
 
@@ -586,7 +589,8 @@ summary(data_2020)
 ```
 <img width="575" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/4a2fedf3-bdea-43cf-9124-144c264fcba3">
 
-### Corrolation Matrix:
+<a name="model_2020_1"></a>
+# 6.1.1 Correlation Matrix:
 ```{r, fig.height=10, fig.weight=10}
 data_2020 %>% ggpairs(columns = c(3:8,2)) +
 theme_bw()
@@ -609,11 +613,11 @@ theme_bw()
 
 **NO2 and Pharmacy:** The correlation between NO2 levels and pharmacy mobility changes is 0.483. This moderate positive correlation indicates that higher visits to pharmacies are associated with higher NO2 levels.
 
-
-**Creating the first Model for the year 2020 including all the variables:**
+<a name="model_2020_2"></a>
+# 6.3.2 Complete MLR:
+Here is the Multiple Linear Regression Model for 2020 data from mid-March to mid-April for counties with more than 500K population(Considering all the mobility variables as well as the day of the week as the independent variable).
 
 ```{r}
-
 model1_2020 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2020)
 
 # Summary
@@ -623,19 +627,19 @@ summary(model1_2020)
 <img width="574" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/5c27c5c8-5175-4b87-84a4-3395030dc93a">
 
 ### Coefficients:
-**Intercept: Estimate = 11.83834, Std. Error = 2.75077, t value = 4.304, Pr(>|t|) = 0.000383, indicating the baseline NO2 level when all predictors are zero.**
+**Intercept:** Estimate = 11.83834, Std. Error = 2.75077, t value = 4.304, Pr(>|t|) = 0.000383, indicating the baseline NO2 level when all predictors are zero.
 
-**Retail and Recreation: Estimate = 0.01069, Std. Error = 0.09012, t value = 0.119, Pr(>|t|) = 0.906865, not statistically significant.**
+**Retail and Recreation:** Estimate = 0.01069, Std. Error = 0.09012, t value = 0.119, Pr(>|t|) = 0.906865, not statistically significant.**
 
-**Grocery and Pharmacy: Estimate = -0.04130, Std. Error = 0.06432, t value = -0.642, Pr(>|t|) = 0.528445, not statistically significant.**
+**Grocery and Pharmacy:** Estimate = -0.04130, Std. Error = 0.06432, t value = -0.642, Pr(>|t|) = 0.528445, not statistically significant.
 
-**Parks: Estimate = 0.06483, Std. Error = 0.01952, t value = 3.321, Pr(>|t|) = 0.003590, statistically significant with a positive effect, indicating higher park mobility is associated with increased NO2 levels.**
+**Parks:** Estimate = 0.06483, Std. Error = 0.01952, t value = 3.321, Pr(>|t|) = 0.003590, statistically significant with a positive effect, indicating higher park mobility is associated with increased NO2 levels.**
 
-**Transit Stations: Estimate = -0.30876, Std. Error = 0.14284, t value = -2.161, Pr(>|t|) = 0.043635, statistically significant with a negative effect, suggesting increased transit station mobility is associated with decreased NO2 levels.**
+**Transit Stations:** Estimate = -0.30876, Std. Error = 0.14284, t value = -2.161, Pr(>|t|) = 0.043635, statistically significant with a negative effect, suggesting increased transit station mobility is associated with decreased NO2 levels.**
 
-**Workplaces: Estimate = 0.09311, Std. Error = 0.12660, t value = 0.735, Pr(>|t|) = 0.471048, not statistically significant.**
+**Workplaces:** Estimate = 0.09311, Std. Error = 0.12660, t value = 0.735, Pr(>|t|) = 0.471048, not statistically significant.
 
-**Residential: Estimate = -0.67997, Std. Error = 0.24151, t value = -2.816, Pr(>|t|) = 0.011043, statistically significant with a negative effect, indicating increased residential mobility (more staying at home) is associated with lower NO2 levels.**
+**Residential:** Estimate = -0.67997, Std. Error = 0.24151, t value = -2.816, Pr(>|t|) = 0.011043, statistically significant with a negative effect, indicating increased residential mobility (more staying at home) is associated with lower NO2 levels.
 
 **Day_of_Week1: Estimate = 1.37066, Std. Error = 0.74935, t value = 1.829, Pr(>|t|) = 0.08312, marginally significant.
 Day_of_Week2: Estimate = 1.60718, Std. Error = 0.78347, t value = 2.052, Pr(>|t|) = 0.054276, marginally significant.
@@ -653,7 +657,7 @@ title(main="Diagnostics for model1_2020", outer=TRUE)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/1f954644-b099-4467-86be-da1f6b93f6ad)
 
-**It seems the point 1 is somehow influential since it has high leverage and the cook's D ri in the border of 1**
+**It seems that point 1 is somehow influential since it has high leverage and the cook's D ri in the border of 1**
 ### excluding point 1 from the data:
 
 ```{r}
