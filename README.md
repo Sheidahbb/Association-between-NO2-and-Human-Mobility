@@ -769,7 +769,7 @@ print(model_kfold_2020)
 - **4-Fold Cross-Validation R²:** `0.68`
 - **Full Dataset Training R²:** `0.79`
 
-The similarity in R² values suggests that our model generalizes well, as the performance does not significantly deteriorate when validated using the k-fold method compared to training on the entire dataset. This consistent performance across different subsets of data indicates **minimal overfitting**, affirming the model's applicability for predictive tasks.
+The similarity in R² values suggests that our model generalizes well, as the performance does not significantly deteriorate when validated using the k-fold method compared to training on the entire dataset. 
 
 <a name="model_2020_6"></a>
 # 6.1.6. Random Forest:
@@ -957,6 +957,8 @@ print(model_kfold_2021)
 
 ```
 <img width="438" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/b09793f7-b300-4c23-b498-10992bc931c4">
+ In 2021, the analysis further reinforced the strength of our predictive modeling. Employing the same methodology of 4-fold cross-validation, the model achieved an **R² of 0.70**, indicating strong predictive accuracy. When the model was applied to the full training set, it demonstrated an **R² of 0.71**. These results suggest a sustained ability of the model to predict outcomes accurately across different data splits, further supporting its robustness and reliability.
+
 
 <a name="model_2021_6"></a>
 # 6.2.6. Random Forest:
@@ -1172,6 +1174,12 @@ model_kfold_2022 <- train(NO2 ~ retail_and_recreation_percent_change_from_baseli
 print(model_kfold_2022)
 ```
 <img width="419" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/67487be8-efa3-437d-acb9-7bdcb7aafaa9">
+In 2022, our model continued to demonstrate strong predictive performance:
+
+- **4-Fold Cross-Validation R²:** `0.704`
+- **Full Dataset Training R²:** `0.787`
+
+These metrics confirm the consistent reliability and accuracy of our model over three consecutive years, showcasing its effectiveness in handling diverse datasets and varied conditions without significant performance degradation.
 
 <a name="model_2022_6"></a>
 # 6.3.6 2022_Random Forest:
