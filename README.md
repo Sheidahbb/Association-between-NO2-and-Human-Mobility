@@ -729,22 +729,22 @@ title(main="Diagnostics for model4_2020", outer=TRUE)
 
 # Significant Predictors:
 
-## Parks Mobility: 
+**Parks Mobility:**
 **Significant positive effect, suggesting that increases in park mobility are associated with higher NO2 levels.**
 #### For a 1 percent from baseline increase in parks_percent_change_from_baseline, we estimate the mean of NO2 percentage increase by 0.06593 after controlling for transit station, residential mobilities, and days of the week.
 
-## Transit Stations Mobility:
-**Significant negative effect, indicating that increased transit station mobility is associated with lower NO2 levels.**
+**Transit Stations Mobility:**
+- Significant negative effect, indicating that increased transit station mobility is associated with lower NO2 levels.
 
-#### For a 1 percent increase from baseline in transit stations percent change, we estimate the mean of NO2 percentage to decrease by 0.37814, after controlling for  parks, residential mobilities, and days of the week.
+- For a 1 percent increase from baseline in transit stations percent change, we estimate the mean of NO2 percentage to decrease by 0.37814, after controlling for  parks, residential mobilities, and days of the week.
 
 
-## Residential Mobility:
-**Significant negative effect, showing that more time spent at home is associated with lower NO2 levels.**
-#### For a 1 percent increase from baseline in residential percent change, we estimate the mean of NO2 percentage to decrease by  0.95633, after controlling for   parks, transit station mobilities, and days of the week
+**Residential Mobility:**
+- Significant negative effect, showing that more time spent at home is associated with lower NO2 levels.
+- For a 1 percent increase from baseline in residential percent change, we estimate the mean of NO2 percentage to decrease by  0.95633, after controlling for   parks, transit station mobilities, and days of the week
 
 ## Day_of_Week5 and Day_of_Week6:
-**Significant negative effects, indicating that NO2 levels are lower on these days compared to the reference day**
+- Significant negative effects, indicating that NO2 levels are lower on these days compared to the reference day.
 
 <a name="model_2020_5"></a>
 # 6.1.5. K-fold cross-validation 
@@ -754,10 +754,10 @@ set.seed(123)
 library(caret)
 data_2020 = data_2020
 
-# Define control method for 4-fold CV
+# Defining control method for 4-fold CV
 control <- trainControl(method = "cv", number = 4)
 
-# Train the model with linear regression
+# Training the model with linear regression
 model_kfold_2020 <- train(NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week  , data = data_2020, method = "lm", trControl = control)
 
 # Print the results, including RMSE
@@ -773,7 +773,7 @@ print(model_kfold_2020)
 # Creating indices for the train set
 trainIndex <- createDataPartition(data_2020$NO2, p = 0.75, list = FALSE, times = 1)
 
-# Create the training data and testing data
+# Creating the training data and testing data
 trainData <- data_2020[trainIndex, ]
 testData <- data_2020[-trainIndex, ]
 
@@ -944,8 +944,6 @@ NO2 = 0.44173 + 0.29639 × (retail_and_recreation_percent_change_from_baseline) 
 # Define control method for 4-fold CV
 control <- trainControl(method = "cv", number = 4)
 
-# Train the model with linear regression
-# Replace y with your target variable, and . indicates all other variables as predictors
 model_kfold_2021 <- train(NO2 ~ retail_and_recreation_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline, data = data_2021, method = "lm", trControl = control)
 
 # Print the results, including RMSE
