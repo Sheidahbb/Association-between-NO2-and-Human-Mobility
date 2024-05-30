@@ -1,7 +1,7 @@
 # Association-between-NO2-and-Human-Mobility
 ## Author: Sheida Habibi
 ## Title 
-Investigating the association between the different mobility metrics and NO2 in theair.
+Evaluating Changes in NO2 Levels in Response to Mobility Insights from Mid-March to Mid-April, for the years 2020, 2021, and 2022(During and Post-Lockdown), Across counties with more than 500K population in the United States
 ## Content table
 |  Number  |    Content  |
 |-----|-----|
@@ -19,6 +19,22 @@ Investigating the association between the different mobility metrics and NO2 in 
 |4.1|   [ NO2 Visualizations ](#vs-NO2)    |
 |4.2|   [ Mobility Visualizations ](#vs-Mobility)    |
 |5|   [ Filtering based on intended period ](#filtering)    |
+|6|   [ Method](#model)    |
+|6.1|   [ 2020_Complete MLR_2020](#model_2020)    |
+|6.1.1|   [ 2020_Start of Backward Elimination Process](#model_2022_1)    |
+|6.1.2|   [2020_K-fold cross-Validation on MLR](#model_2020_2)    |
+|6.1.3|   [ 2020_Random forest](#model_2020_3)    |
+|6.2|   [ 2021_Complete MLR](#model_2021)    |
+|6.2.1|   [ 2021_Start of Backward Elimination process](#model_201_1)    |
+|6.2.2|   [2021_K-fold cross-Validation on LR](#model_2021_2)    |
+|6.2.3|   [ 2021_Random forest_2021](#model_2021_3)    |
+|6.3|   [ 2022_Complete MLR](#model_2022)    |
+|6.3.1|   [ 2022_Start of the Backward Elimination Process](#model_2022_1)    |
+|6.3.2|   [2022_K-fold cross-Validation on MLR](#model_2022_2)    |
+|6.3.3|   [ 2022_Random forest](#model_2022_3)    |
+|7|   [Conclusion](#conclusion)    |
+|8|   [ Limitations](#limit)    |
+
 <a name="desc"></a>
 # 1. Description
 This repository focuses on data preprocessing, visualization, and analysis of the relationship between Google Mobility data and NO2 levels. Specifically, it aims to explore how well Google Mobility data, along with the day of the week, can explain the variability in NO2 levels in counties with more than 500K population.
@@ -1131,7 +1147,7 @@ print(model_kfold_2022)
 <img width="419" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/67487be8-efa3-437d-acb9-7bdcb7aafaa9">
 
 
-### Let's perform rando forest to make sure that our linear moodel is performing good enough.
+### Let's perform random forest to make sure that our linear model is performing well enough.
 
 ```{r}
 # Creating indices for the train set
@@ -1169,3 +1185,20 @@ print(paste("RMSE:", rmse))
 
 
 
+<a name="limit"></a>
+# 8. Limitations:
+There are some limitations of this project, which involves using Google Mobility:
+
+1. **Data Representativeness and Coverage**: Google mobility data might not represent the entire population accurately. It only includes users who have location services enabled, potentially introducing a selection bias. The data may also vary in quality and completeness based on geographical regions and user demographics.
+
+2. **Temporal and Spatial Variability**: The granularity of Google mobility data can vary, and it might not capture fine-scale temporal and spatial variability accurately. This limitation can affect the precision of MLR estimates and the understanding of NO2 level variations across different times and locations.
+
+3. **Missing Pre-Lockdown Data**:Based on the following visualization, we observe that the trend for NO2 levels differs when comparing the data from 2020 and 2019. However, the absence of mobility data from before the COVID-19 pandemic limits our analysis. Without pre-lockdown mobility information, we cannot establish a clear baseline for comparing pre- and post-lockdown conditions. This gap makes it challenging to accurately quantify the full impact of lockdown measures on mobility patterns and NO2 levels.
+
+   <img width="600" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/5621d14b-d466-4913-82db-0b6b878bf3ab">
+
+5. **Technological and Usage Biases**: Differences in smartphone usage, the version of Android installed, and the specific Google services utilized by users can affect the availability and accuracy of the mobility data. Additionally, variations in cell signal strength can influence data recording rates.
+
+6. **Exposure Misclassification**: Traditional methods for estimating air pollution exposure often fail to account for human mobility and the time people spend in different environments. This misclassification can lead to inaccuracies in assessing the true exposure to NO2, especially if people spend significant time away from their primary residence.
+
+7. **Interaction with Other Factors**: NO2 levels are influenced by various factors beyond human mobility, such as weather conditions, industrial activities, and traffic patterns. Not including these variables in your model could lead to omitted variable bias, affecting the reliability of your results.
