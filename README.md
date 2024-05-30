@@ -764,6 +764,12 @@ print(model_kfold_2020)
 ```
 
 <img width="314" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/2c85b4d2-24f9-49d9-987b-72bb85b9a67c">
+**Result:** :Our analysis in 2020 indicates robust model performance based on the **R² metrics** derived from 4-fold cross-validation and full dataset training:
+
+- **4-Fold Cross-Validation R²:** `0.68`
+- **Full Dataset Training R²:** `0.79`
+
+The similarity in R² values suggests that our model generalizes well, as the performance does not significantly deteriorate when validated using the k-fold method compared to training on the entire dataset. This consistent performance across different subsets of data indicates **minimal overfitting**, affirming the model's applicability for predictive tasks.
 
 <a name="model_2020_6"></a>
 # 6.1.6. Random Forest:
@@ -862,8 +868,8 @@ Excluding point 21 which is an influential point:
 data_2021 = data_2021%>% slice(-21)
 ```
 
-<a name="model_2021_2"></a>
-# 6.2.2 Backward elimination:
+<a name="model_2021_3"></a>
+# 6.2.3 Backward elimination:
 
 We do feature selection using the Backward elimination method, which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.
 
@@ -920,8 +926,8 @@ Based on the model, we have enough evidence to say that the following variables 
 3.residential_percent_change_from_baseline 
 4.workplaces_percent_change_from_baseline
 
-<a name="model_2021_3"></a>
-# 6.2.3 Final Model 2021:
+<a name="model_2021_4"></a>
+# 6.2.4 Final Model 2021:
 
 Now, we can talk about the result of model 4 as our final model for year 2021. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
 
@@ -937,8 +943,8 @@ NO2 = 0.44173 + 0.29639 × (retail_and_recreation_percent_change_from_baseline) 
 
 **Workplaces:** Each 1% increase from the baseline is associated with a 0.09487 increase in NO2 levels.
 
-<a name="model_2021_4"></a>
-# 6.2.4 K-fold cross-validation:
+<a name="model_2021_5"></a>
+# 6.2.5 K-fold cross-validation:
 ```{r}
 
 # Define control method for 4-fold CV
@@ -952,8 +958,8 @@ print(model_kfold_2021)
 ```
 <img width="438" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/b09793f7-b300-4c23-b498-10992bc931c4">
 
-<a name="model_2021_5"></a>
-# 6.2.5. Random Forest:
+<a name="model_2021_6"></a>
+# 6.2.6. Random Forest:
 Performing random forest to compare with our model to make sure that the random forest is performing okay
 
 ```{r}
