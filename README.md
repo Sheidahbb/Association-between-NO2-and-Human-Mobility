@@ -21,24 +21,24 @@ Evaluating Changes in NO2 Levels in Response to Mobility Insights from Mid-March
 |5|   [ Filtering based on intended period ](#filtering)    |
 |6|   [ Method](#model)    |
 |6.2|   [ 2020](#model_2020)  |
-|6.2.1|   [ 2020_Correlation Metrix](#model_2020_1)    |
-|6.2.1|   [ 2020_MLR including all variables](#model_2020_2)    |
-|6.2.2|   [ 2020_Backward Elimination Process](#model_2020_3)    |
-|6.2.3|   [2020_FinalMLR Model ](#model_2020_4)    |
+|6.1.1|   [ 2020_Correlation Metrix](#model_2020_1)    |
+|6.1.2|   [ 2020_MLR including all variables](#model_2020_2)    |
+|6.1.3|   [ 2020_Backward Elimination Process](#model_2020_3)    |
+|6.1.4|   [2020_FinalMLR Model ](#model_2020_4)    |
 |6.2.5|   [2020_K-fold cross-Validation on MLR](#model_2020_5)    |
 |6.2.6|   [ 2020_Random forest](#model_2020_6)    |
 |6.2|   [ 2021](#model_2021)  |
 |6.2.1|   [ 2021_Correlation Metrix](#model_2021_1)    |
-|6.2.1|   [ 2021_MLR including all variables](#model_2021_2)    |
-|6.2.2|   [ 2021_Backward Elimination Process](#model_2021_3)    |
-|6.2.3|   [2021_FinalMLR Model ](#model_2021_4)    |
+|6.2.2|   [ 2021_MLR including all variables](#model_2021_2)    |
+|6.2.3|   [ 2021_Backward Elimination Process](#model_2021_3)    |
+|6.2.4|   [2021_FinalMLR Model ](#model_2021_4)    |
 |6.2.5|   [2021_K-fold cross-Validation on MLR](#model_2021_5)    |
 |6.2.6|   [ 2021_Random forest](#model_2021_6)    |
 |6.3|   [ 2022](#model_2022)  |
 |6.3.1|   [ 2022_Correlation Metrix](#model_2022_1)    |
-|6.3.1|   [ 2022_MLR including all variables](#model_2022_2)    |
-|6.3.2|   [ 2022_Backward Elimination Process](#model_2022_3)    |
-|6.3.3|   [2022_FinalMLR Model ](#model_2022_4)    |
+|6.3.2|   [ 2022_MLR including all variables](#model_2022_2)    |
+|6.3.3|   [ 2022_Backward Elimination Process](#model_2022_3)    |
+|6.3.4|   [2022_FinalMLR Model ](#model_2022_4)    |
 |6.3.5|   [2022_K-fold cross-Validation on MLR](#model_2022_5)    |
 |6.3.6|   [ 2022_Random forest](#model_2022_6)    |
 |7|   [Conclusion](#conclusion)    |
