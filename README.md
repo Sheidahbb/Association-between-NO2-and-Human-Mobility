@@ -7,31 +7,40 @@ Evaluating Changes in NO2 Levels in Response to Mobility Insights from Mid-March
 |-----|-----|
 |1|  [ Description ](#desc)   |
 |2|   [ Summary](#meth)   |
-|3|    [ Data Gathering and Preparation ](#dg)   |
-|3.1.1|    [ Importing Libreries ](#ld)   |
-|3.1.2|    [ Reading and Preparing the NO2 Datasets ](#dp)   |
-|3.1.3|    [ Reading and Preparing the Mobility Datasets ](#mo)   |
-|3.1.4|    [ Merging the NO2 and Mobility Datasets ](#me1)   |
-|3.1.5|    [ Reading and Preparing the Population Dataset ](#po)   |
-|3.1.6|    [ Final Dataset ](#me2)   |
+|3|    [ Data](#data)   |
+|3.1|    [ Data Gathering and Preparation ](#dg)   |
+|3.1.1|    [ Reading and Preparing the NO2 Datasets ](#dp)   |
+|3.1.2|    [ Reading and Preparing the Mobility Datasets ](#mo)   |
+|3.1.3|    [ Merging the NO2 and Mobility Datasets ](#me1)   |
+|3.14|    [ Reading and Preparing the Population Dataset ](#po)   |
+|3.1.5|    [ Final Dataset ](#me2)   |
 |3.2|    [ Filtering counties with more than 500K population ](#fi)   |
 |4|   [ Visualizations ](#vs)    |
 |4.1|   [ NO2 Visualizations ](#vs-NO2)    |
 |4.2|   [ Mobility Visualizations ](#vs-Mobility)    |
 |5|   [ Filtering based on intended period ](#filtering)    |
 |6|   [ Method](#model)    |
-|6.1|   [ 2020_Complete MLR_2020](#model_2020)    |
-|6.1.1|   [ 2020_Start of Backward Elimination Process](#model_2022_1)    |
-|6.1.2|   [2020_K-fold cross-Validation on MLR](#model_2020_2)    |
-|6.1.3|   [ 2020_Random forest](#model_2020_3)    |
-|6.2|   [ 2021_Complete MLR](#model_2021)    |
-|6.2.1|   [ 2021_Start of Backward Elimination process](#model_201_1)    |
-|6.2.2|   [2021_K-fold cross-Validation on LR](#model_2021_2)    |
-|6.2.3|   [ 2021_Random forest_2021](#model_2021_3)    |
-|6.3|   [ 2022_Complete MLR](#model_2022)    |
-|6.3.1|   [ 2022_Start of the Backward Elimination Process](#model_2022_1)    |
-|6.3.2|   [2022_K-fold cross-Validation on MLR](#model_2022_2)    |
-|6.3.3|   [ 2022_Random forest](#model_2022_3)    |
+|6.2|   [ 2020 (#model_2020)  |
+|6.2.1|   [ 2021_Correlation Metrix](#model_2020_1)    |
+|6.2.1|   [ 2021_MLR including all variables](#model_2020_2)    |
+|6.2.2|   [ 2021_Backward Elimination Process](#model_2020_3)    |
+|6.2.3|   [2021_FinalMLR Model ](#model_2020_4)    |
+|6.2.5|   [2021_K-fold cross-Validation on MLR](#model_2020_5)    |
+|6.2.6|   [ 2021_Random forest](#model_2020_6)    |
+|6.2|   [ 2021 (#model_2021)  |
+|6.2.1|   [ 2021_Correlation Metrix](#model_2021_1)    |
+|6.2.1|   [ 2021_MLR including all variables](#model_2021_2)    |
+|6.2.2|   [ 2021_Backward Elimination Process](#model_2021_3)    |
+|6.2.3|   [2021_FinalMLR Model ](#model_2021_4)    |
+|6.2.5|   [2021_K-fold cross-Validation on MLR](#model_2021_5)    |
+|6.2.6|   [ 2021_Random forest](#model_2021_6)    |
+|6.3|   [ 2022 (#model_2022)  |
+|6.3.1|   [ 2022_Correlation Metrix](#model_2022_1)    |
+|6.3.1|   [ 2022_MLR including all variables](#model_2022_2)    |
+|6.3.2|   [ 2022_Backward Elimination Process](#model_2022_3)    |
+|6.3.3|   [2022_FinalMLR Model ](#model_2022_4)    |
+|6.3.5|   [2022_K-fold cross-Validation on MLR](#model_2022_5)    |
+|6.3.6|   [ 2022_Random forest](#model_2022_6)    |
 |7|   [Conclusion](#conclusion)    |
 |8|   [ Limitations](#limit)    |
 
@@ -44,17 +53,27 @@ This project focuses on data preprocessing, visualization, and analysis to evalu
 # 2. Summary
 The work involves obtaining data on NO2, Google mobility data, and population data, and merging them on their primary keys, which consist of the date, county name, and state name. The collected data is then preprocessed. Data cleaning, outlier handling, and missing values are addressed. Then, counties with populations greater than 500,000 are filtered for further visualization. Based on the visualization, data from mid-March to mid-April is observed to experience the same decline in NO2 levels as was seen in the same period in 2020. Therefore, a linear model is built to compare the data for the same period in 2020, 2021, and 2022. A random forest model is also used on the data to ensure that our results from the linear model are reliable. Additionally, k-fold cross-validation is employed to ensure that the linear model is not overfitting.
 
-<a name="dg"></a>
-# 3 Data Gathering and Preparation
+<a name="data"></a>
+# 3. Data Gathering and Preparation
 Data Sources: Google Mobility data from the Google website, NO2 emission from the EPA website along with the population information
 Independent Variables: Google Mobility data metrics and the day of the week.
+
+## More description on Google mobility variables and how they are calculated.
+
+| Google Mobility Variable  |    Description  |
+|-----|-----|
+|Retail and Recreation| Changes in visits to places like restaurants, cafes, shopping centers, theme parks, museums, libraries, and movie theaters.|
+|Grocery and Pharmacy| Changes in visits to grocery stores, food warehouses, farmers markets, specialty food shops, drug stores, and pharmacies.|
+|Parks| Changes in visits to national parks, public beaches, marinas, dog parks, plazas, and public gardens.|
+|Transit Stations| Changes in visits to public transport hubs such as subway, bus, and train stations.|
+|Workplaces| Changes in the number of people visiting workplaces|
+|Residential| Changes in the amount of time people spend at home.|
+
+The Google Mobility variables are measured as percentage changes compared to a baseline value, which represents the median value for that day of the week during the 5-week period from January 3 to February 6, 2020. The data is collected from users who have enabled Location History on their Google accounts, ensuring privacy and anonymization.
 Response Variable: NO2 levels.
 
-<a name="ld"></a>
-# 3.1.1 Importing Libreries
-
 **Libraries:**
-In This project different libraries are being used. Some packages that are use in the preprocessing step is imported here:
+In This project different libraries are being used. Some packages that are used in the preprocessing step are imported here:
 
 ```python
 import pandas as pd
@@ -65,7 +84,7 @@ import matplotlib.dates as mdates
 
 **All data sets are read and converted to a data frame format from CSV files using **pandas**:**
 <a name="dp"></a>
-# 3.1.2 Reading and Preparing the NO2 Datasets
+# 3.1.1 Reading and Preparing the NO2 Datasets
 
 **NO2 data for the years 2020, 2021, and 2022 is read using pandas:**
 ```python
@@ -97,7 +116,7 @@ d_p
 <img width="322" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/721086a0-95e2-48f9-a527-80aff8adb63f">
 
 <a name="mo"></a>
-# 3.1.3 Reading and Preparing the Mobility Datasets
+# 3.1.2 Reading and Preparing the Mobility Datasets
 
 **Mobility data for the years 2020, 2021, and 2022 is read and concatenated using pandas, and then needed columns are selected for further analysis:**
 ```python 
@@ -124,7 +143,7 @@ d_m
 
 ```
 <a name="me1"></a>
-# 3.1.4 Merging the NO2 and Mobility Datasets
+# 3.1.3 Merging the NO2 and Mobility Datasets
 **Combining NO2 and Mobility Data:(Merging on the primary key which is the combination of Date, County and State Name)**
 ```python
 # Changing the name of data frames for easier use
@@ -148,7 +167,7 @@ corrected_merged_df = pd.merge(no2_df, mobility_df, how='inner', on=['Date Local
 corrected_merged_df.head()
 ```
 <a name="po"></a>
-# 3.1.5 Reading and Preparing the Population Dataset
+# 3.1.4 Reading and Preparing the Population Dataset
 **Adding Population data to our merged data:**
 ```python
 df = pd.read_csv('cc-est2022-agesex-all.csv')
@@ -985,11 +1004,10 @@ print(paste("RMSE:", rmse))
 
 **Comparing the results, we can say that linear regression is a good model for explaining NO2.***
 
+<a name="model_2022"></a>
+# 2022
 
-#2022
-
-# 2022_midmar_mid april_more than 500k
-
+### Reading Data:
 ```{r}
 data_2022 <- read.csv(file = "Counties_over_500000_2022_march_april.csv")
 data_2022$Day_of_Week <- factor(data_2022$Day_of_Week)
@@ -998,10 +1016,10 @@ data_2022$Day_of_Week <- factor(data_2022$Day_of_Week)
 
 
 ```{r}
-
 data_2022<- select(data_2022, c(-X,-index))
-
 ```
+<a name="model_2022_1"></a>
+# 6.3.1 Correlation Matrix:
 
 ```{r, fig.height=10, fig.weight=10}
 data_2022 %>% ggpairs(columns = c(3:8,2)) +
@@ -1010,8 +1028,11 @@ theme_bw()
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/6433e0b2-4a3e-4478-b91a-7f4dd698aa68)
 
-```{r}
+<a name="model_2022_2"></a>
+# 6.3.2 Complete MLR:
 
+### Here is the Multiple Linear Regression Model for 2022 data from mid-March to mid-April for counties with more than 500K population(Considering all the mobility variables as well as the day of the week as the independent variable).
+```{r}
 model1_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = data_2022)
 
 # Summary
@@ -1028,13 +1049,14 @@ title(main="Diagnostics for model1_2022", outer=TRUE)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/d31503c8-8c40-43e4-9e93-888e4a3e4439)
 
-### Let's exlude point 32 and perform the model:
+### Let's exclude point 32 and perform the model:
 ```{r}
 data_2022 = data_2022%>% slice(-32)
 ```
+<a name="model_2022_3"></a>
+# 6.3.1 Backward elimination:
 
-
-# Let's exclude day of the week:
+### At this step day of the week is excluded since pretty much all of them are not significant(very high p-value:
 ```{r}
 
 model2_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline  , data = data_2022)
@@ -1045,7 +1067,7 @@ summary(model2_2022)
 ```
 <img width="581" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/c6201035-30ad-43f8-9281-c4b1b4a6bcdb">
 
-# let's exlude residential_percent_change_from_baseline which seems to be the least significant:
+# ### At this step residential_percent_change_from_baseline is excluded since has a very high p-value:
 
 ```{r}
 
@@ -1057,7 +1079,7 @@ summary(model3_2022)
 ```
 <img width="584" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/49338004-f409-44f3-98f7-e4875bcdcd3a">
 
-# Lets' check the model:
+### Checking the model using the diagnostic plot
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model3_2022, pch = 16, sub.caption = "")
@@ -1067,7 +1089,10 @@ title(main="Diagnostics for model3_2022", outer=TRUE)
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/e5b9e2f0-8321-456e-821d-b1db97671a7c)
 
 
-# seem good. Let's exclude workplaces_percent_change_from_baseline  which we do not have strong evidance to include it in the model:
+<a name="model_2022_4"></a>
+# 6.3.4 Final Model 2022:
+
+# At this point workplaces_percent_change_from_baseline is excluded since it is not significant in the model:
 ```{r}
 
 model4_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline , data = data_2022)
@@ -1078,7 +1103,7 @@ summary(model4_2022)
 ```
 <img width="594" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/b0c0a45e-d5f2-4a4a-adb1-e3d525d3dd40">
 
-# Great! Lets check the model:
+### Checking the diagnostic plots:
 
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
@@ -1089,30 +1114,24 @@ title(main="Diagnostics for m4", outer=TRUE)
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/8873d721-c17c-451a-a8a9-13bffeeb1713)
 
 
-### The model seems good since all the variables seems significant.
-
-### It seems great! Based on the model we have now, the following variables play a significant role in explaining the NO2 for the period from mid-March to mid-April in 2022.
+### The model seems good and all the following variables are significant.
 
 ### 1.parks_percent_change_from_baseline
 ### 2.transit_stations_percent_change_from_baseline
 ### 3.retail_and_recreation_percent_change_from_baseline
 
-
-
-
-## Final Model 2022:
-
-#### Now, we can talk about the result of model 4 as our final model for year 2022. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
+#### Now, we can consider model 4's result as our final model for 2022. We have good evidence that all the remaining variables impact the model, as the p values are small. Also, we met all the linear model conditions along the way.
 
 #### NO2 = -15.30 + 1.33 × (retail_and_recreation_percent_change_from_baseline) + 0.10 × (parks_percent_change_from_baseline) - 1.36 × (transit_stations_percent_change_from_baseline)
 
 ## Interpratation of MLR Model4:
 
-#### Retail and Recreation: Each 1% increase from the baseline in retail and recreation activities is associated with an increase of approximately 1.33365 units in NO2 levels.
+#### Retail and Recreation: Each 1% increase from the baseline in retail and recreation activities is associated with an increase of approximately 1.33365 units in NO2 levels while we are controlling for parks_percent_change_from_baseline and retail_and_recreation_percent_change_from_baseline.
 
-### Parks: Each 1% increase from the baseline in park visits is associated with an increase of approximately 0.09555 units in NO2 levels.
 
-### Transit Stations: Each 1% decrease from the baseline in transit station traffic is associated with a decrease of approximately 1.35743 units in NO2 levels.
+### Parks: Each 1% increase in park visits from the baseline is associated with an increase of approximately 0.09555 units in NO2 levels controlling for retail_and_recreation_percent_change_from_baseline and retail_and_recreation_percent_change_from_baseline.
+
+### Transit Stations: Each 1% decrease from the baseline in transit station traffic is associated with a decrease of approximately 1.35743 units in NO2 levels,controlling for retail_and_recreation_percent_change_from_baseline and parks_percent_change_from_baseline.
 
 
 ## Overall F-test for model4:
@@ -1125,17 +1144,16 @@ title(main="Diagnostics for m4", outer=TRUE)
 
 #### The F-statistic from your model output has a very low p-value (2.092e-08), which provides strong evidence against the null hypothesis. This confirms that at least one of the β coefficients significantly differs from 0, indicating the necessity of including these explanatory variables in the model to explain the variability in NO2 levels.
 
-#### Multiple R-squared: 0.787, implying that approximately 78.7% of the variability in NO2 levels is explained by the variations in retail and recreation, parks, transit stations.
+#### Multiple R-squared: 0.787, implying that approximately 78.7% of the variability in NO2 levels is explained by the variations in retail and recreation, parks, and transit stations.
 
 ### Adjusted R-squared: 0.7542, which takes into account the number of predictors in the model and provides a more precise measure of the model's explanatory power, adjusting for the degrees of freedom.
 
+<a name="model_2022_5"></a>
+# 6.3.5 2022_K-fold Cross-validation: 
 
-### Let's performe K-fold cross validation to make sure that the model is not overfitting by comparing the results:
+### At this point K-fold cross-validation is performed to make sure that the model is not overfitting by comparing the results:
 
-### K fold cross validation:
 ```{r}
-
-# Define control method for 4-fold CV
 control <- trainControl(method = "cv", number = 4)
 
 # Training the model with linear regression
@@ -1147,24 +1165,22 @@ print(model_kfold_2022)
 ```
 <img width="419" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/67487be8-efa3-437d-acb9-7bdcb7aafaa9">
 
-
+<a name="model_2022_6"></a>
+# 6.3.3 2022_Random Forest:
 ### Let's perform random forest to make sure that our linear model is performing well enough.
 
 ```{r}
 # Creating indices for the train set
 trainIndex <- createDataPartition(data_2022$NO2, p = 0.75, list = FALSE, times = 1)
 
-# Create the training data and testing data
 trainData <- data_2022[trainIndex, ]
 testData <- data_2022[-trainIndex, ]
-
 
 library(randomForest)
 # Create the random forest model
 rf_model_2022 <- randomForest(NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline
                +parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline, data = trainData, ntree = 100, mtry = 3, importance = TRUE)
 
-# Print the model summary
 print(rf_model_2022)
 ```
 <img width="562" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/7fa127d2-7d20-49b0-840d-4288c463581b">
@@ -1198,8 +1214,11 @@ There are some limitations of this project, which involves using Google Mobility
 
    <img width="600" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/5621d14b-d466-4913-82db-0b6b878bf3ab">
 
+8.**Missing Google Mobility Data for Many Locations:** Google Mobility data is not captured for all locations in the United States. This incomplete coverage can lead to gaps in the dataset, affecting the comprehensiveness and accuracy of the analysis. Areas without mobility data may not be represented in the study, potentially skewing the results and limiting the generalizability of the findings. 
+
 5. **Technological and Usage Biases**: Differences in smartphone usage, the version of Android installed, and the specific Google services utilized by users can affect the availability and accuracy of the mobility data. Additionally, variations in cell signal strength can influence data recording rates.
 
 6. **Exposure Misclassification**: Traditional methods for estimating air pollution exposure often fail to account for human mobility and the time people spend in different environments. This misclassification can lead to inaccuracies in assessing the true exposure to NO2, especially if people spend significant time away from their primary residence.
 
 7. **Interaction with Other Factors**: NO2 levels are influenced by various factors beyond human mobility, such as weather conditions, industrial activities, and traffic patterns. Not including these variables in your model could lead to omitted variable bias, affecting the reliability of your results.
+
