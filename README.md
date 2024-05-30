@@ -20,13 +20,13 @@ Evaluating Changes in NO2 Levels in Response to Mobility Insights from Mid-March
 |4.2|   [ Mobility Visualizations ](#vs-Mobility)    |
 |5|   [ Filtering based on intended period ](#filtering)    |
 |6|   [ Method](#model)    |
-|6.2|   [ 2020](#model_2020)  |
+|6.1|   [ 2020](#model_2020)  |
 |6.1.1|   [ 2020_Correlation Metrix](#model_2020_1)    |
 |6.1.2|   [ 2020_MLR including all variables](#model_2020_2)    |
 |6.1.3|   [ 2020_Backward Elimination Process](#model_2020_3)    |
 |6.1.4|   [2020_FinalMLR Model ](#model_2020_4)    |
-|6.2.5|   [2020_K-fold cross-Validation on MLR](#model_2020_5)    |
-|6.2.6|   [ 2020_Random forest](#model_2020_6)    |
+|6.1.5|   [2020_K-fold cross-Validation on MLR](#model_2020_5)    |
+|6.1.6|   [ 2020_Random forest](#model_2020_6)    |
 |6.2|   [ 2021](#model_2021)  |
 |6.2.1|   [ 2021_Correlation Metrix](#model_2021_1)    |
 |6.2.2|   [ 2021_MLR including all variables](#model_2021_2)    |
