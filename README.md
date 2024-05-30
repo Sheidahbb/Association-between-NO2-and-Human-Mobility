@@ -1216,7 +1216,7 @@ print(paste("RMSE:", rmse))
 ```
 <img width="395" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/000ca961-6c48-4d19-8aa0-dd3131859973">
 
-**Result:**In 2022, consistent with previous years, the linear model again demonstrated better performance, with MAE and RMSE values of 1.02 and 1.23, respectively, compared to 1.31 and 2.06 for the random forest. This further underscores the reliability of the linear model, in addition to its interpretability, making it a dependable choice for ongoing and future analyses.
+**Result:** In 2022, consistent with previous years, the linear model again demonstrated better performance, with MAE and RMSE values of 1.02 and 1.23, respectively, compared to 1.31 and 2.06 for the random forest. This further underscores the reliability of the linear model, in addition to its interpretability, making it a dependable choice for ongoing and future analyses.
 
 <a name="conclusion"></a>
 # 7. Conclusion and summarizing:
