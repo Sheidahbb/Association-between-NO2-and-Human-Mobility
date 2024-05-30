@@ -22,7 +22,7 @@ library(car)
 library(dplyr)
 ```
 
-### Read Data of year 2020
+### Reading Data of year 2020
 ```{r}
 data_2020 <- read.csv(file = "Counties_over_500000_2020_march_april.csv")
 data_2020$Day_of_Week <- factor(data_2020$Day_of_Week)
@@ -49,7 +49,7 @@ data_2020 %>% ggpairs(columns = c(3:8,2)) +
 theme_bw()
 
 ```
-### The corrolation between No2 and the independent variables can be seen in the above matrix.From the plots it can be seen that the linear relationship exist between the dependent and independent variables.
+### The correlation between No2 and the independent variables can be seen in the above matrix. The plots show a linear relationship between the dependent and independent variables.
 
 
 ### Creating the first Model including all the variables:
@@ -142,7 +142,7 @@ title(main="Diagnostics for model3_2020", outer=TRUE)
 
 ```
 
-### Seems gtreat! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid marrch to mid april for the year 2020.
+### Seems gtreat! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid march to mid april for the year 2020.
 
 ### 1.parks_percent_change_from_baseline
 ### 2.transit_stations_percent_change_from_baseline
@@ -153,7 +153,7 @@ title(main="Diagnostics for model3_2020", outer=TRUE)
 
 ## Final Model 2020:
 
-#### Now, we can talk about the result of model 4 as our final model for year 2020. We have a good evidence that all the remaining variables have impact on the model as the p values are small. Also, we met all the linear model condition along the way.
+#### Now, we can discuss the result of model 4 as our final model for 2020. We have good evidence that all the remaining variables impact the model, as the p values are small. Also, we met all the linear model conditions along the way.
 
 #### NO2 = 9.64831 + 0.06593 × (parks_percent_change_from_baseline) - 0.37814 × (transit_stations_percent_change_from_baseline) - 0.95633 × (residential_percent_change_from_baseline) + 1.54640 × (Day_of_Week1) + 1.72536 × (Day_of_Week2) + 1.31874 × (Day_of_Week3) + 2.19430 × (Day_of_Week4) - 5.45247 × (Day_of_Week5) - 9.33665 × (Day_of_Week6)
 
@@ -200,8 +200,6 @@ data_2020 = data_2020
 # Define control method for 4-fold CV
 control <- trainControl(method = "cv", number = 4)
 
-# Train the model with linear regression
-# Replace y with your target variable, and . indicates all other variables as predictors
 model_kfold_2020 <- train(NO2 ~ parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week  , data = data_2020, method = "lm", trControl = control)
 
 # Print the results, including RMSE
@@ -215,27 +213,18 @@ print(model_kfold_2020)
 # Set the seed for reproducibility
 set.seed(123)
 
-# Create indices for the train set
 trainIndex <- createDataPartition(data_2020$NO2, p = 0.75, list = FALSE, times = 1)
 
-# Create the training data and testing data
+# Creating the training data and testing data
 trainData <- data_2020[trainIndex, ]
 testData <- data_2020[-trainIndex, ]
 
 library(randomForest)
-# Create the random forest model
-# y is the numeric response variable and . represents all other variables in the data as predictors
+
 rf_model_2020 <- randomForest(NO2 ~  parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+residential_percent_change_from_baseline +	Day_of_Week , data = trainData, ntree = 100, mtry = 3, importance = TRUE)
 
 # Print the model summary
 print(rf_model_2020)
-
-# Plot error as trees are added
-plot(rf_model_2020)
-
-# View variable importance
-importance(rf_model_2020)
-varImpPlot(rf_model_2020)
 
 ```
 
@@ -405,8 +394,7 @@ title(main="Diagnostics for m4", outer=TRUE)
 # Define control method for 4-fold CV
 control <- trainControl(method = "cv", number = 4)
 
-# Train the model with linear regression
-# Replace y with your target variable, and . indicates all other variables as predictors
+#
 model_kfold_2021 <- train(NO2 ~ retail_and_recreation_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline, data = data_2021, method = "lm", trControl = control)
 
 # Print the results, including RMSE
@@ -431,19 +419,10 @@ testData <- data_2021[-trainIndex, ]
 
 
 library(randomForest)
-# Create the random forest model
-# y is the numeric response variable and . represents all other variables in the data as predictors
 rf_model_2021 <- randomForest(NO2 ~ retail_and_recreation_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline, data = trainData, ntree = 100, mtry = 3, importance = TRUE)
 
 # Print the model summary
 print(rf_model_2021)
-
-# Plot error as trees are added
-plot(rf_model_2021)
-
-# View variable importance
-importance(rf_model_2021)
-varImpPlot(rf_model_2021)
 
 ```
 
@@ -501,7 +480,7 @@ plot(model1_2022, pch = 16, sub.caption = "")
 title(main="Diagnostics for model1_2022", outer=TRUE)
 
 ```
-### Let's exlude point 32 and perform the model:
+### exluding point 32 and perform the model:
 ```{r}
 data_2022 = data_2022%>% slice(-32)
 ```
@@ -516,7 +495,7 @@ summary(model1_2022)
 ```
 
 
-# Let's exclude day of the week:
+# excluding day of the week:
 ```{r}
 
 model2_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline  , data = data_2022)
@@ -525,7 +504,7 @@ model2_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+groc
 summary(model2_2022)
 
 ```
-# let's exlude residential_percent_change_from_baseline which seems to be the least significant:
+# exluding residential_percent_change_from_baseline which seems to be the least significant:
 
 ```{r}
 
@@ -535,7 +514,7 @@ model3_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+groc
 summary(model3_2022)
 
 ```
-# Lets' check the moodel:
+# checking the model:
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model3_2022, pch = 16, sub.caption = "")
@@ -551,7 +530,7 @@ model4_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+groc
 summary(model4_2022)
 
 ```
-# Great! Lets check the model:
+# Checking the model:
 
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
@@ -563,7 +542,7 @@ title(main="Diagnostics for m4", outer=TRUE)
 
 ### The model seems good since all the variables seems significant.
 
-### Seems gtreat! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid marrch to mid april for the year 2022.
+### Based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid marrch to mid april for the year 2022.
 
 ### 1.parks_percent_change_from_baseline
 ### 2.transit_stations_percent_change_from_baseline
@@ -602,7 +581,7 @@ title(main="Diagnostics for m4", outer=TRUE)
 ### Adjusted R-squared: 0.7542, which takes into account the number of predictors in the model and provides a more precise measure of the model's explanatory power, adjusting for the degrees of freedom.
 
 
-### Let's performe K-fold cross validation to make sure that the model is not overfitting by comparing the results:
+### Performing K-fold cross validation to make sure that the model is not overfitting by comparing the results:
 
 ### K fold cross validation:
 ```{r}
@@ -610,8 +589,7 @@ title(main="Diagnostics for m4", outer=TRUE)
 # Define control method for 4-fold CV
 control <- trainControl(method = "cv", number = 4)
 
-# Train the model with linear regression
-# Replace y with your target variable, and . indicates all other variables as predictors
+
 model_kfold_2022 <- train(NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline
                +parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline, data = data_2022, method = "lm", trControl = control)
 
@@ -622,38 +600,27 @@ print(model_kfold_2022)
 ```
 
 
-### Let's perform rando forest to make sure that our linear moodel is performing good enough.
+### Performing random forest to make sure that our linear moodel is performing good enough.
 
 ```{r}
 
 # Set the seed for reproducibility
 set.seed(123)
 
-# Create indices for the train set
+# Creating indices for the train set
 trainIndex <- createDataPartition(data_2022$NO2, p = 0.75, list = FALSE, times = 1)
 
-# Create the training data and testing data
+
 trainData <- data_2022[trainIndex, ]
 testData <- data_2022[-trainIndex, ]
 
 
 library(randomForest)
-# Create the random forest model
-# y is the numeric response variable and . represents all other variables in the data as predictors
 rf_model_2022 <- randomForest(NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline
                +parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline, data = trainData, ntree = 100, mtry = 3, importance = TRUE)
 
 # Print the model summary
 print(rf_model_2022)
-
-# Plot error as trees are added
-plot(rf_model_2022)
-
-# View variable importance
-importance(rf_model_2022)
-varImpPlot(rf_model_2022)
-
-
 ```
 
 ```{r}
