@@ -233,7 +233,7 @@ plt.xticks(rotation=45)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/901d8c3c-2f52-411b-bfb4-1725b2129e81)
 
-**The following visualizations is done by tableau which is a tool for data visualization and does not require coding**
+**TI did the following visualizations using tableau which is a tool for data visualization**
 
 ### Visualizing the NO2 Data for the period of mid march to mid April 2020:
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/e1ca79c0-e075-41f8-9b7f-789a658b2010">
