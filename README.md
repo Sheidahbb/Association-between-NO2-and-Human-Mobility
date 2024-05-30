@@ -93,13 +93,14 @@ data2 = pd.read_csv('daily_42602_2021.csv')
 data3 = pd.read_csv('daily_42602_2022.csv')
 ```
 
-**No2 data of those 3 years are concatenated and added to each other:**
+No2 data of those 3 years are concatenated and added to each other:
 ```python 
 x = pd.concat([data1, data2], axis=0)
 
 d_p= pd.concat([x, data3], axis=0)
 ```
-**The required columns are selected for further analysis:**
+
+The required columns are selected for further analysis:*
 ```python 
 d_p=d_p[['Date Local','State Name','County Name','Arithmetic Mean']]
 
@@ -118,7 +119,7 @@ d_p
 <a name="mo"></a>
 # 3.1.2 Reading and Preparing the Mobility Datasets
 
-**Mobility data for the years 2020, 2021, and 2022 is read and concatenated using pandas, and then needed columns are selected for further analysis:**
+Mobility data for the years 2020, 2021, and 2022 is read and concatenated using pandas, and then needed columns are selected for further analysis:
 ```python 
 d1 = pd.read_csv('2020_US_Region_Mobility_Report.csv')
 d2 = pd.read_csv('2021_US_Region_Mobility_Report.csv')
@@ -131,7 +132,7 @@ d5= pd.concat([d4, d3], axis=0)
 d_m=d5[['sub_region_1','sub_region_2','date', 'retail_and_recreation_percent_change_from_baseline', 'grocery_and_pharmacy_percent_change_from_baseline',	'parks_percent_change_from_baseline',	'transit_stations_percent_change_from_baseline' ,	'workplaces_percent_change_from_baseline',	'residential_percent_change_from_baseline' ]]
 ```
 
-**Imputing the missing values by explaining them with the mean of that column:**
+Imputing the missing values by explaining them with the mean of that column:
 ```python
 d_m['retail_and_recreation_percent_change_from_baseline'] = d_m['retail_and_recreation_percent_change_from_baseline'].fillna(d_m['retail_and_recreation_percent_change_from_baseline'].mean())
 d_m['grocery_and_pharmacy_percent_change_from_baseline'] = d_m['grocery_and_pharmacy_percent_change_from_baseline'].fillna(d_m['grocery_and_pharmacy_percent_change_from_baseline'].mean())
@@ -144,7 +145,7 @@ d_m
 ```
 <a name="me1"></a>
 # 3.1.3 Merging the NO2 and Mobility Datasets
-**Combining NO2 and Mobility Data:(Merging on the primary key which is the combination of Date, County and State Name)**
+Combining NO2 and Mobility Data:(Merging on the primary key which is the combination of Date, County and State Name)
 ```python
 # Changing the name of data frames for easier use
 no2_df=d_p
@@ -168,7 +169,7 @@ corrected_merged_df.head()
 ```
 <a name="po"></a>
 # 3.1.4 Reading and Preparing the Population Dataset
-**Adding Population data to our merged data:**
+Adding Population data to our merged data:
 ```python
 df = pd.read_csv('cc-est2022-agesex-all.csv')
 # Remove the word "County" from the 'CTYNAME' column
@@ -189,7 +190,7 @@ data = pd.merge(corrected_merged_df, grouped_mean, how='left', on=['State Name',
 ```
 <a name="fi"></a>
 # 3.2  Filtering counties with more than 500K population
-**Categorizing the data into three categories of the population that they are located in:** 
+Categorizing the data into three categories of the population that they are located in: 
 ```python
 data['Date Local'] = pd.to_datetime(data['Date Local'])
 data.set_index('Date Local', inplace=True)
@@ -200,13 +201,11 @@ Counties_over_500000=data[data['POPESTIMATE']>=500000]
 # Resetting the index:
 Counties_over_500000.reset_index(inplace=True)
 ```
-<a name="vs"></a>
-# 4 Visualizations
 
 <a name="vs1"></a>
 # 4 Visualizations
 
-**Aggregate data weekly to reduce the noise and to be able to gain some information based on the visualization:**
+Aggregate data weekly to reduce the noise and to be able to gain some information based on the visualization:
 ```python
 # Calculate the weekly average for specified columns
 Counties_over_500000['Date Local'] = pd.to_datetime(Counties_over_500000['Date Local'])
@@ -218,7 +217,7 @@ weekly_means.index = pd.to_datetime(weekly_means.index)
 
 <a name="vs-NO2"></a>
 # 4.1 NO2 Visualizations vs-NO2
-#### Visualizing weekly average of NO2 for counties with more than 500K population:(It is worth mentioning that the visualization is for the period in which we had the information for mobility as well since we did the inner join.)
+Visualizing weekly average of NO2 for counties with more than 500K population:(It is worth mentioning that the visualization is for the period in which we had the information for mobility as well since we did the inner join.)
 ```python
 # Set the aesthetic style of the plots
 sns.set_style("whitegrid")
@@ -255,22 +254,22 @@ plt.xticks(rotation=45)
 
 **I did the following visualizations using Tableau which is a tool for data visualization**
 
-### Visualizing the NO2 Data for the period of mid march to mid-April 2020:
+Visualizing the NO2 Data for the period of mid-March to mid-April 2020:
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/e1ca79c0-e075-41f8-9b7f-789a658b2010">
 
 
-### Visualizing the NO2 Data for the period of mid march to mid april 2021:
+Visualizing the NO2 Data for the period of mid-March to mid-April 2021:
 
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/6ee8d5d3-ff74-43d3-8f69-a65660788567">
 
-### Visualizing the NO2 Data for the period of mid march to mid april 2022:
+Visualizing the NO2 Data for the period of mid march to mid-April 2022:
 
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/8c0c0a87-27ec-4c15-968e-7bdbe55b980e">
 
 <a name="vs-Mobility"></a>
 # 4.2. Mobility Visualizations 
 
-**Visualizing all the mobility variables over time in the same graph:**
+Visualizing all the mobility variables over time in the same graph:
 
 ```python
 plt.figure(figsize=(14, 6))
@@ -305,7 +304,7 @@ plt.show()
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/2089b67d-419c-4677-8b70-15f75f559ec5)
 
-**Comparing parks percentage change from the baseline for different years:**
+Comparing parks percentage change from the baseline for different years:
 ```python
 weekly_means.index = pd.to_datetime(weekly_means.index)
 
