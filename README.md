@@ -1204,7 +1204,30 @@ print(paste("RMSE:", rmse))
 ```
 <img width="395" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/000ca961-6c48-4d19-8aa0-dd3131859973">
 
+<a name="conclusion"></a>
+# 7. Conclusion and summarizing:
+The three regression models presented analyze the relationships between changes in nitrogen dioxide (NO2) levels and various human activity indicators over three consecutive years (2020, 2021, and 2022-all mid-April to mid-April). Each model employs slightly different sets of predictors based on Google Mobility data, which reflect changes in behavior at various types of locations relative to a baseline period.
+All of these analyses are done for counties with more than 500K population and for the period from March 15th to April 15th—the period during which we had lockdown in 2020.
 
+**Model for 2020 data:**
+- Variables: Parks, Transit Stations, Residential, Day of the Week
+Observations: This suggests that as activity at parks and residential areas increases, NO2 levels increase, whereas increased activity at transit stations is associated with a decrease in NO2.
+- Statistics: High R-squared (0.7913), indicating that about 79.13% of the variability in NO2 is explained by the model. The model is highly significant with a p-value < 0.0001.
+**Model for 2021 data**
+- Variables: Retail and Recreation, Parks, Transit Stations, Workplaces
+Observations: Increased activity in retail, recreation, and parks correlates positively with NO2 levels. Conversely, increased activity at transit stations correlates with a decrease in NO2 levels. Workplace activity also shows a positive correlation with NO2 levels.
+- Statistics: R-squared is slightly lower than in 2020 (0.7062), suggesting that about 70.62% of NO2 variability is explained by this model. The model remains statistically significant.
+**Model for 2022 data:**
+- Variables: Retail and Recreation, Grocery and Pharmacy, Parks, Transit Stations
+- Observations: This model introduces grocery and pharmacy activity. Similar to previous years, transit station activity is negatively correlated with NO2 levels, but all other variables (retail and recreation, grocery and pharmacy, parks) are positively correlated with NO2 levels.
+- Statistics: The highest R-squared (0.787), close to the 2020 model, indicating a strong fit of the model to the data. The model is highly significant with the strongest statistical indicators among the three.
+Comparative Analysis
+
+- Impact of Mobility Changes: Across all years, increased mobility at transit stations consistently correlates with decreased NO2 levels, possibly due to cleaner transportation methods being more prevalent in transit stations than other areas. Retail and recreation mobility show a positive correlation with NO2 emissions, increasing particularly in prominence in the 2021 and 2022 models.
+  
+- Model Fit and Significance: The models have strong fits as indicated by R-squared values (>70% in all cases), suggesting good explanatory power for NO2 variability. The significant F-statistics across all models reinforce the relevance of these predictors in explaining changes in NO2 levels.
+
+- Overall each year’s model reveals significant insights into how different types of human mobility impact environmental quality, as measured by NO2 levels. The consistent negative correlation of transit mobility with NO2 might be particularly valuable for urban planning and public health policy, suggesting benefits from encouraging public transit usage. These models underscore the complex relationships between human activities and environmental outcomes across different contexts and times.
 
 <a name="limit"></a>
 # 8. Limitations:
