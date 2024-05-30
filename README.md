@@ -816,9 +816,8 @@ print(paste("RMSE:", rmse))
 <img width="478" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/4167a176-07b8-45af-8649-3adf22099006">
 
 
-**2021**
-
-#2021_midmar_mid april_more than 500k
+<a name="model_2021"></a>
+# 6.2. 2021
 
 ### Reading Data
 ```{r}
@@ -832,6 +831,7 @@ data_2021$Day_of_Week <- factor(data_2021$Day_of_Week)
 ```{r}
 data_2021<- select(data_2021,c( -X,-index))
 ```
+<a name="model_2022_1"></a>
 ### Correlation metric:
 ```{r, fig.height=10, fig.weight=10}
 data_2021 %>% ggpairs(columns = c(3:8,2)) +
@@ -840,7 +840,10 @@ theme_bw()
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/643c33dd-b821-4ac0-99a2-a5c023d5e086)
 
-### Creating the first Model including all the variables:
+<a name="model_2022_2"></a>
+# 6.3.2 Complete MLR:
+
+### Here is the Multiple Linear Regression Model, including all the variables for 2021 data from mid-March to mid-April for counties with more than 500K population(Considering all the mobility variables as well as the day of the week as the independent variable).
 
 ```{r}
 
@@ -861,13 +864,20 @@ title(main="Diagnostics for model1_2021", outer=TRUE)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/31ae67ea-0d1e-4ff3-b01c-9dda0e0fac70)
 
-### Point number21 is an influesntial point. Therefore, we exclude it from the data:
+### As can be seen, point 21 is influential and violates the LR condition; therefore, we need to exclude it.
+
+## Excluding point 21 which is an influential point:
 ```{r}
 data_2021 = data_2021%>% slice(-21)
 ```
 
+<a name="model_2022_3"></a>
+# 6.3.1 Backward elimination:
+
+**We do feature selection using the Backward elimination method, which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.**
 
 ### Let's exclude residential_percent_change_from_baseline from the model since it is the least significant.
+
 ```{r}
 
 model2_2021 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline +	Day_of_Week , data = data_2021)
