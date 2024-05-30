@@ -253,32 +253,27 @@ plt.xticks(rotation=45)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/901d8c3c-2f52-411b-bfb4-1725b2129e81)
 
-**TI did the following visualizations using tableau which is a tool for data visualization**
+**I did the following visualizations using Tableau which is a tool for data visualization**
 
-### Visualizing the NO2 Data for the period of mid march to mid April 2020:
+### Visualizing the NO2 Data for the period of mid march to mid-April 2020:
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/e1ca79c0-e075-41f8-9b7f-789a658b2010">
-
-
-
-
 
 
 ### Visualizing the NO2 Data for the period of mid march to mid april 2021:
 
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/6ee8d5d3-ff74-43d3-8f69-a65660788567">
 
-
-
 ### Visualizing the NO2 Data for the period of mid march to mid april 2022:
 
 <img width="700" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/8c0c0a87-27ec-4c15-968e-7bdbe55b980e">
+
 <a name="vs-Mobility"></a>
-# 4.2 Mobility Visualizations 
+# 4.2. Mobility Visualizations 
+
 **Visualizing all the mobility variables over time in the same graph:**
+
 ```python
 plt.figure(figsize=(14, 6))
-
-# Plotting each mobility category with a unique label and line style
 plt.plot(weekly_means.index, weekly_means['retail_and_recreation_percent_change_from_baseline'], label='Retail & Recreation')
 plt.plot(weekly_means.index, weekly_means['grocery_and_pharmacy_percent_change_from_baseline'], label='Grocery & Pharmacy')
 plt.plot(weekly_means.index, weekly_means['parks_percent_change_from_baseline'], label='Parks')
@@ -305,8 +300,6 @@ ax.xaxis.set_major_formatter(formatter)
 
 # Rotating the x-axis labels
 plt.xticks(rotation=45)
-
-# Adjust layout for better fit and display the plot
 plt.tight_layout()
 plt.show()
 ```
