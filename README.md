@@ -72,7 +72,7 @@ Independent Variables: Google Mobility data metrics and the day of the week.
 The Google Mobility variables are measured as percentage changes compared to a baseline value, which represents the median value for that day of the week during the 5-week period from January 3 to February 6, 2020. The data is collected from users who have enabled Location History on their Google accounts, ensuring privacy and anonymization.
 Response Variable: NO2 levels.
 
-**Libraries:**
+Libraries:
 In This project different libraries are being used. Some packages that are used in the preprocessing step are imported here:
 
 ```python
@@ -184,7 +184,7 @@ grouped_mean
 <a name="me2"></a>
 # 3.1.6 Final Dataset
 
-**Merging population data with our previous data by doing left join on the combination of county and state:**
+Merging population data with our previous data by doing left join on the combination of county and state:
 ```python
 data = pd.merge(corrected_merged_df, grouped_mean, how='left', on=['State Name', 'County Name'])
 ```
@@ -345,7 +345,7 @@ plt.show()
 
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/886d6a44-8cfe-4e46-8ecc-0e7cd4cc6d6a)
 
-**Comparing gerocery and pharmacy percentage change from the baseline for different years:**
+Comparing grocery and pharmacy percentage change from the baseline for different years:
 ```python
 weekly_means.index = pd.to_datetime(weekly_means.index)
 
@@ -384,7 +384,7 @@ plt.show()
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/5527d9a3-b101-4795-9757-0e2bf3d86ccc)
 
-**Comparing retail and recreation percentage change from the baseline for different years:**
+Comparing retail and recreation percentage change from the baseline for different years:
 ```python
 sns.set_style("whitegrid")
 
@@ -422,7 +422,7 @@ plt.show()
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/60234806-c994-4582-a48f-6e75cf5bfeba)
 
 
-**Comparing transit station percentage change from the baseline for different years:**
+Comparing transit station percentage change from the baseline for different years:
 ```python
 plt.figure(figsize=(14, 6))
 
@@ -455,7 +455,7 @@ plt.show()
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/20b64065-4ec8-4ff9-820e-b5a659523c92)
 
-**Comparing workplace percentage change from the baseline for different years:**
+Comparing workplace percentage change from the baseline for different years:
 ```python
 sns.set_style("whitegrid")
 
@@ -492,7 +492,7 @@ plt.show()
 
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/328a0595-508a-455c-a190-224d8efd4a9e)
 
-**Comparing residential percentage change from the baseline for different years:**
+Comparing residential percentage change from the baseline for different years:
 ```python
 sns.set_style("whitegrid")
 # Create a figure and set its size
@@ -529,14 +529,14 @@ plt.show()
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/73728c96-380e-4d8b-a7a4-c5c0fb3d9746)
 
-### As an instant I brought Mobility data on the map and the distribution of that for different states located in different counties:
+As an instant I brought Mobility data on the map and the distribution of that for different states located in different counties:
 **This visualization is done by tableau which is a tool for visualization and does not require coding**
 <img width="800" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/66c2d876-bbe2-46bf-b29c-855fbe8d0d99">
 
 **Note:From the visualization, the period of mid-March to mid-April is selected for further analysis**
 <a name="filtering"></a>
-# 5 Filtering based on intended period 
-**Filteringmid-March to mid-April data for the year 2020, and putting it in a CSV file:**
+# 5 Filtering based on the intended period 
+Filteringmid-March to mid-April data for the year 2020, and putting it in a CSV file:
 ```python
 start_date = '2020-03-15'
 end_date = '2020-04-15'
@@ -548,7 +548,7 @@ df_1['Day_of_Week'] = df_1['Date Local'].dt.dayofweek
 df_1.to_csv('Counties_over_500000_2020_march_april.csv')
 ```
 
-**Filteringmid-March to mid-April data for the year 2021, and putting it in a CSV file:**
+Filteringmid-March to mid-April data for the year 2021, and putting it in a CSV file:
 ```python
 start_date = '2021-03-15'
 end_date = '2021-04-15'
@@ -560,7 +560,7 @@ df_2['Day_of_Week'] = df_2['Date Local'].dt.dayofweek
 df_2.to_csv('Counties_over_500000_2021_march_april.csv')
 ```
 
-**Filteringmid-March to mid-April data for the year 2022, and putting it in a CSV file:**
+Filteringmid-March to mid-April data for the year 2022, and putting it in a CSV file:
 ```python
 start_date = '2022-03-15'
 end_date = '2022-04-15'
@@ -577,7 +577,7 @@ df_3.to_csv('Counties_over_500000_2022_march_april.csv')
 ```{r}
 data_2020 <- read.csv(file = "Counties_over_500000_2020_march_april.csv")
 
-#converting day of week to factor so that R can consider it as categorical variable:
+#converting the day of week to factor so that R can consider it as a categorical variable:
 data_2020$Day_of_Week <- factor(data_2020$Day_of_Week)
 ```
 **Data Summary:**
@@ -597,17 +597,17 @@ theme_bw()
 
 ### The correlation between No2 and the independent variables can be seen in the above matrix.From the plots it can be seen that the linear relationship exist between the dependent and independent variables
 
-**Parks and NO2: The correlation between park mobility and NO2 is weaker (0.294), suggesting less direct impact of park visitation on NO2 levels compared to other activities.**
+**Parks and NO2:** The correlation between park mobility and NO2 is weaker (0.294), suggesting less direct impact of park visitation on NO2 levels compared to other activities.**
 
-**Transit Stations and NO2: Transit mobility has a stronger correlation with NO2 (0.483), which aligns with the notion that increased use of transit systems might lead to higher NO2 emissions.**
+**Transit Stations and NO2:** Transit mobility has a stronger correlation with NO2 (0.483), which aligns with the notion that increased use of transit systems might lead to higher NO2 emissions.
 
-**Workplaces and NO2: Workplace mobility changes have a moderate positive correlation with NO2 (0.517), implying that more people at work might contribute to increased NO2 levels, possibly due to commuting.**
+**Workplaces and NO2:** Workplace mobility changes have a moderate positive correlation with NO2 (0.517), implying that more people at work might contribute to increased NO2 levels, possibly due to commuting.
 
-**Residential and NO2: There's a negative correlation (-0.734) between residential mobility and NO2, indicating that higher stay-at-home measures might reduce NO2 levels.**
+**Residential and NO2:** There's a negative correlation (-0.734) between residential mobility and NO2, indicating that higher stay-at-home measures might reduce NO2 levels.
 
-**NO2 and Recreation: The correlation between NO2 levels and recreation mobility changes is 0.482. This moderate positive correlation suggests that increased recreational activities are associated with higher NO2 levels. This could be due to increased vehicle emissions when people travel to recreational locations.**
+** NO2 and Recreation: ** The correlation between NO2 levels and recreation mobility changes is 0.482. This moderate positive correlation suggests that increased recreational activities are associated with higher NO2 levels. This could be due to increased vehicle emissions when people travel to recreational locations.
 
-**NO2 and Pharmacy: The correlation between NO2 levels and pharmacy mobility changes is 0.483. This moderate positive correlation indicates that higher visits to pharmacies are associated with higher NO2 levels.**
+**NO2 and Pharmacy:** The correlation between NO2 levels and pharmacy mobility changes is 0.483. This moderate positive correlation indicates that higher visits to pharmacies are associated with higher NO2 levels.
 
 
 **Creating the first Model for the year 2020 including all the variables:**
@@ -644,7 +644,7 @@ Day_of_Week4: Estimate = 1.77416, Std. Error = 1.21835, t value = 1.456, Pr(>|t|
 Day_of_Week5: Estimate = -5.19269, Std. Error = 1.44420, t value = -3.596, Pr(>|t|) = 0.001928, statistically significant with a negative effect.
 Day_of_Week6: Estimate = -8.29014, Std. Error = 1.63449, t value = -5.072, Pr(>|t|) = 6.77e-05, statistically significant with a strong negative effect.**
 
-### Checking the linear model conditions to see if they are met using the diagnostic plot:"**
+Checking the linear model conditions to see if they are met using the diagnostic plot:
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model1_2020, pch = 16, sub.caption = "")
