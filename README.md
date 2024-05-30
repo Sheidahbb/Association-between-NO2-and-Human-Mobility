@@ -396,7 +396,7 @@ for year in [2020, 2021, 2022]:
     # Select data for the year
     yearly_data = weekly_means[weekly_means.index.year == year]
     
-    # Normalize dates to a common year (e.g., 2020)
+    # Normalize dates to a common year
     normalized_dates = pd.to_datetime(yearly_data.index.strftime('2020-%m-%d'))
     
     # Plotting
@@ -407,7 +407,7 @@ plt.title('Weekly Average Percent Change from Baseline in Mobility Trends by Yea
 plt.xlabel('Date')
 plt.ylabel('Percent Change from Baseline')
 
-# Format the x-axis to show month names
+# Formating the x-axis to show month names
 plt.gca().xaxis.set_major_locator(mdates.MonthLocator())  # Locate months
 plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%B'))  # Format as month names
 # Adding a legend to distinguish between different years
@@ -431,7 +431,7 @@ for year in [2020, 2021, 2022]:
     # Select data for the year
     yearly_data = weekly_means[weekly_means.index.year == year]
     
-    # Normalize dates to a common year (e.g., 2020)
+    # Normalizing dates to a common year 
     normalized_dates = pd.to_datetime(yearly_data.index.strftime('2020-%m-%d'))
     
     # Plotting
@@ -442,7 +442,7 @@ plt.title('Weekly Average Percent Change from Baseline in Mobility Trends by Yea
 plt.xlabel('Month of year')
 plt.ylabel('Percent Change from Baseline')
 
-# Format the x-axis to show month names
+# Formating the x-axis to show month names
 plt.gca().xaxis.set_major_locator(mdates.MonthLocator())  # Locate months
 plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%B'))  # Format as month names
 # Adding a legend to distinguish between different years
@@ -459,7 +459,7 @@ Comparing workplace percentage change from the baseline for different years:
 ```python
 sns.set_style("whitegrid")
 
-# Create a figure and set its size
+# Creating a figure and set its size
 plt.figure(figsize=(14, 6))
 
 # Loop through each year and plot it
@@ -467,7 +467,7 @@ for year in [2020, 2021, 2022]:
     # Select data for the year
     yearly_data = weekly_means[weekly_means.index.year == year]
 
-    # Normalize dates to a common year (e.g., 2020)
+    # Normalize dates to a common year
     normalized_dates = pd.to_datetime(yearly_data.index.strftime('2020-%m-%d'))
     
     # Plotting
@@ -583,7 +583,7 @@ data_2020 <- read.csv(file = "Counties_over_500000_2020_march_april.csv")
 #converting the day of week to factor so that R can consider it as a categorical variable:
 data_2020$Day_of_Week <- factor(data_2020$Day_of_Week)
 ```
-**Data Summary:**
+Data Summary:
 ```{r}
 summary(data_2020)
 ```
@@ -641,12 +641,12 @@ summary(model1_2020)
 
 **Residential:** Estimate = -0.67997, Std. Error = 0.24151, t value = -2.816, Pr(>|t|) = 0.011043, statistically significant with a negative effect, indicating increased residential mobility (more staying at home) is associated with lower NO2 levels.
 
-**Day_of_Week1: Estimate = 1.37066, Std. Error = 0.74935, t value = 1.829, Pr(>|t|) = 0.08312, marginally significant.
-Day_of_Week2: Estimate = 1.60718, Std. Error = 0.78347, t value = 2.052, Pr(>|t|) = 0.054276, marginally significant.
-Day_of_Week3: Estimate = 1.18909, Std. Error = 0.82862, t value = 1.435, Pr(>|t|) = 0.167536, not statistically significant.
-Day_of_Week4: Estimate = 1.77416, Std. Error = 1.21835, t value = 1.456, Pr(>|t|) = 0.161667, not statistically significant.
-Day_of_Week5: Estimate = -5.19269, Std. Error = 1.44420, t value = -3.596, Pr(>|t|) = 0.001928, statistically significant with a negative effect.
-Day_of_Week6: Estimate = -8.29014, Std. Error = 1.63449, t value = -5.072, Pr(>|t|) = 6.77e-05, statistically significant with a strong negative effect.**
+- Day_of_Week1: Estimate = 1.37066, Std. Error = 0.74935, t value = 1.829, Pr(>|t|) = 0.08312, marginally significant.
+- Day_of_Week2: Estimate = 1.60718, Std. Error = 0.78347, t value = 2.052, Pr(>|t|) = 0.054276, marginally significant.
+- Day_of_Week3: Estimate = 1.18909, Std. Error = 0.82862, t value = 1.435, Pr(>|t|) = 0.167536, not statistically significant.
+- Day_of_Week4: Estimate = 1.77416, Std. Error = 1.21835, t value = 1.456, Pr(>|t|) = 0.161667, not statistically significant.
+- Day_of_Week5: Estimate = -5.19269, Std. Error = 1.44420, t value = -3.596, Pr(>|t|) = 0.001928, statistically significant with a negative effect.
+- Day_of_Week6: Estimate = -8.29014, Std. Error = 1.63449, t value = -5.072, Pr(>|t|) = 6.77e-05, statistically significant with a strong negative effect.
 
 Checking the linear model conditions to see if they are met using the diagnostic plot:
 ```{r}
@@ -657,8 +657,8 @@ title(main="Diagnostics for model1_2020", outer=TRUE)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/1f954644-b099-4467-86be-da1f6b93f6ad)
 
-**It seems that point 1 is somehow influential since it has high leverage and the cook's D ri in the border of 1**
-### excluding point 1 from the data:
+It seems that point 1 is somehow influential since it has high leverage and the cook's D ri in the border of 1.
+excluding point 1 from the data:
 
 ```{r}
 data_2020 <- data_2020%>% slice(-1)
@@ -730,12 +730,11 @@ title(main="Diagnostics for model4_2020", outer=TRUE)
 # Significant Predictors:
 
 **Parks Mobility:**
-**Significant positive effect, suggesting that increases in park mobility are associated with higher NO2 levels.**
-#### For a 1 percent from baseline increase in parks_percent_change_from_baseline, we estimate the mean of NO2 percentage increase by 0.06593 after controlling for transit station, residential mobilities, and days of the week.
+-Significant positive effect, suggesting that increases in park mobility are associated with higher NO2 levels.
+- For a 1 percent from baseline increase in parks_percent_change_from_baseline, we estimate the mean of NO2 percentage increase by 0.06593 after controlling for transit station, residential mobilities, and days of the week.
 
 **Transit Stations Mobility:**
 - Significant negative effect, indicating that increased transit station mobility is associated with lower NO2 levels.
-
 - For a 1 percent increase from baseline in transit stations percent change, we estimate the mean of NO2 percentage to decrease by 0.37814, after controlling for  parks, residential mobilities, and days of the week.
 
 
@@ -833,7 +832,7 @@ theme_bw()
 <a name="model_2022_2"></a>
 # 6.3.2 Complete MLR:
 
-### Here is the Multiple Linear Regression Model, including all the variables for 2021 data from mid-March to mid-April for counties with more than 500K population(Considering all the mobility variables as well as the day of the week as the independent variable).
+Here is the Multiple Linear Regression Model, including all the variables for 2021 data from mid-March to mid-April for counties with more than 500K population(Considering all the mobility variables as well as the day of the week as the independent variable).
 
 ```{r}
 
@@ -845,7 +844,7 @@ summary(model1_2021)
 ```
 <img width="594" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/7eb268a3-1b45-4cbe-99e7-a9c8fbe58833">
 
-### Lets's check the model first:
+Lets's check the model first:
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model1_2021, pch = 16, sub.caption = "")
@@ -864,7 +863,7 @@ data_2021 = data_2021%>% slice(-21)
 <a name="model_2021_2"></a>
 # 6.2.2 Backward elimination:
 
-**We do feature selection using the Backward elimination method, which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.**
+We do feature selection using the Backward elimination method, which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.
 
 Let's exclude residential_percent_change_from_baseline from the model since it is the least significant.
 
@@ -926,8 +925,7 @@ Now, we can talk about the result of model 4 as our final model for year 2021. W
 
 NO2 = 0.44173 + 0.29639 × (retail_and_recreation_percent_change_from_baseline) + 0.04553 × (parks_percent_change_from_baseline) − 0.53085 × (transit_stations_percent_change_from_baseline) + 0.09487 × (workplaces_percent_change_from_baseline)
 
-## Interpratation of MLR Model4:
-
+**Interpratation of MLR Model4:**
 
 **Retail and Recreation:** Each 1% increase from the baseline is associated with a 0.29639 increase in NO2 levels.
 
@@ -1004,7 +1002,7 @@ print(paste("RMSE:", rmse))
 **Comparing the results, we can say that linear regression is a good model for explaining NO2.***
 
 <a name="model_2022"></a>
-# 2022
+# 6.3. 2022
 
 ### Reading Data:
 ```{r}
