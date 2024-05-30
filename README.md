@@ -664,8 +664,8 @@ title(main="Diagnostics for model1_2020", outer=TRUE)
 data_2020 <- data_2020%>% slice(-1)
 ```
 
-
-# Backwars elimination:
+<a name="model_2020_3"></a>
+# 6.1.3. Backward elimination:
 We perform feature selection using the Backward elimination method, which helps identify the most significant predictors and simplify the model. Therefore, we will end up with a model that is easier to interpret and potentially more robust.
 
 Removing retail_and_recreation_percent_change_from_baseline (p = 0.906865)- That has the highest p-value:
@@ -703,8 +703,8 @@ title(main="Diagnostics for model3_2020", outer=TRUE)
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/effda9ae-062a-49aa-ad02-cc4720bd0bb8)
 
 
-
-
+<a name="model_2020_4"></a>
+# 6.1.4. Final Model:
 Next step in doing backward elimination: excluding 'workplaces_percent_change_from_baseline' that has a comparably higher p-value than the other variables:
 
 ```{r}
@@ -715,9 +715,9 @@ summary(model4_2020)
 
 ```
 <img width="619" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/59de84cc-5baf-4b76-b889-5610a6d1f64a">
-### Some days seem to be significant, and the others seem not. for those days that are significant, the intercept would be different
+Some days seem to be significant, and others seem not. for those days that are significant, the intercept would be different
 
-Lets check the model:
+Let's check the model:
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model4_2020, pch = 16, sub.caption = "")
@@ -746,7 +746,8 @@ title(main="Diagnostics for model4_2020", outer=TRUE)
 ## Day_of_Week5 and Day_of_Week6:
 **Significant negative effects, indicating that NO2 levels are lower on these days compared to the reference day**
 
-## Kfold cross-validation 
+<a name="model_2020_5"></a>
+# 6.1.5. K-fold cross-validation 
 This step is implemented to evaluate the performance of a machine learning model and ensure that it is not overfitting.
 ```{r}
 set.seed(123)
@@ -765,7 +766,8 @@ print(model_kfold_2020)
 
 <img width="314" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/2c85b4d2-24f9-49d9-987b-72bb85b9a67c">
 
-## Random Foretst:
+<a name="model_2020_6"></a>
+# 6.1.6. Random Forest:
 ```{r}
 
 # Creating indices for the train set
