@@ -1044,7 +1044,7 @@ summary(model1_2022)
 ```
 <img width="593" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/d3b82cb5-6a85-4cf6-8c16-3b129cc89a6a">
 
-### Checking for the conditions using the diagnostic plot:
+Checking for the conditions using the diagnostic plot:
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
 plot(model1_2022, pch = 16, sub.caption = "")
@@ -1052,7 +1052,7 @@ title(main="Diagnostics for model1_2022", outer=TRUE)
 
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/d31503c8-8c40-43e4-9e93-888e4a3e4439)
-### As it can be seen, point 32 is an influential point and violates the LR condition; therefore, we need to exclude it.
+As it can be seen, point 32 is an influential point and violates the LR condition; therefore, we need to exclude it.
 
 ## Excluding point 32 which is an influential point:
 ```{r}
@@ -1062,7 +1062,7 @@ data_2022 = data_2022%>% slice(-32)
 # 6.3.1 Backward elimination:
 **We do feature selection using the Backward elimination method, which helps in identifying the most significant predictors and simplifying the model. Therefore we will end up with a model that is easier to interpret and potentially more robust.**
 
-### At this step day of the week is excluded since pretty much all of them are not significant(very high p-value:
+At this step day of the week is excluded since pretty much all of them are not significant(very high p-value:
 ```{r}
 
 model2_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline+workplaces_percent_change_from_baseline+residential_percent_change_from_baseline  , data = data_2022)
@@ -1073,7 +1073,7 @@ summary(model2_2022)
 ```
 <img width="581" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/c6201035-30ad-43f8-9281-c4b1b4a6bcdb">
 
-# ### At this step residential_percent_change_from_baseline is excluded since has a very high p-value:
+At this step residential_percent_change_from_baseline is excluded since has a very high p-value:
 
 ```{r}
 
@@ -1098,7 +1098,7 @@ title(main="Diagnostics for model3_2022", outer=TRUE)
 <a name="model_2022_4"></a>
 # 6.3.4 Final Model 2022:
 
-# At this point workplaces_percent_change_from_baseline is excluded since it is not significant in the model:
+At this point workplaces_percent_change_from_baseline is excluded since it is not significant in the model:
 ```{r}
 
 model4_2022 <- lm( NO2 ~ retail_and_recreation_percent_change_from_baseline+grocery_and_pharmacy_percent_change_from_baseline+parks_percent_change_from_baseline+transit_stations_percent_change_from_baseline , data = data_2022)
@@ -1109,7 +1109,7 @@ summary(model4_2022)
 ```
 <img width="594" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/b0c0a45e-d5f2-4a4a-adb1-e3d525d3dd40">
 
-### Checking the diagnostic plots:
+Checking the diagnostic plots:
 
 ```{r}
 par(mfrow = c(2,2), oma = c(0,0,2,0))
@@ -1122,37 +1122,37 @@ title(main="Diagnostics for m4", outer=TRUE)
 
 ### The model seems good and all the following variables are significant.
 
-### 1.parks_percent_change_from_baseline
-### 2.transit_stations_percent_change_from_baseline
-### 3.retail_and_recreation_percent_change_from_baseline
+1.parks_percent_change_from_baseline
+2.transit_stations_percent_change_from_baseline
+3.retail_and_recreation_percent_change_from_baseline
 
-#### Now, we can consider model 4's result as our final model for 2022. We have good evidence that all the remaining variables impact the model, as the p values are small. Also, we met all the linear model conditions along the way.
+Now, we can consider model 4's result as our final model for 2022. We have good evidence that all the remaining variables impact the model, as the p values are small. Also, we met all the linear model conditions along the way.
 
 #### NO2 = -15.30 + 1.33 × (retail_and_recreation_percent_change_from_baseline) + 0.10 × (parks_percent_change_from_baseline) - 1.36 × (transit_stations_percent_change_from_baseline)
 
 ## Interpratation of MLR Model4:
 
-#### Retail and Recreation: Each 1% increase from the baseline in retail and recreation activities is associated with an increase of approximately 1.33365 units in NO2 levels while we are controlling for parks_percent_change_from_baseline and retail_and_recreation_percent_change_from_baseline.
+**Retail and Recreation** Each 1% increase from the baseline in retail and recreation activities is associated with an increase of approximately 1.33365 units in NO2 levels while we are controlling for parks_percent_change_from_baseline and retail_and_recreation_percent_change_from_baseline.
 
 
-### Parks: Each 1% increase in park visits from the baseline is associated with an increase of approximately 0.09555 units in NO2 levels controlling for retail_and_recreation_percent_change_from_baseline and retail_and_recreation_percent_change_from_baseline.
+**Parks:** Each 1% increase in park visits from the baseline is associated with an increase of approximately 0.09555 units in NO2 levels controlling for retail_and_recreation_percent_change_from_baseline and retail_and_recreation_percent_change_from_baseline.
 
-### Transit Stations: Each 1% decrease from the baseline in transit station traffic is associated with a decrease of approximately 1.35743 units in NO2 levels,controlling for retail_and_recreation_percent_change_from_baseline and parks_percent_change_from_baseline.
+**Transit Stations:** Each 1% decrease from the baseline in transit station traffic is associated with a decrease of approximately 1.35743 units in NO2 levels,controlling for retail_and_recreation_percent_change_from_baseline and parks_percent_change_from_baseline.
 
 
 ## Overall F-test for model4:
 
-#### • Full Model:NO2=β0 +β1×(parks_percent_change_from_baseline)+β2×(transit_stations_percent_change_from_baseline)+β3×(retail_and_recreation_percent_change_from_baseline)
+• Full Model:NO2=β0 +β1×(parks_percent_change_from_baseline)+β2×(transit_stations_percent_change_from_baseline)+β3×(retail_and_recreation_percent_change_from_baseline)
 
-#### H0 : No explanatory variables should be included in the model: β1 = β2 = · · · = βK = 0.
+#### H0 : No explanatory variables should be included in the model: β1 = β2 = · · · = βK = 0.***
 
 #### HA : At least one explanatory variable should be included in the model: Not all βk’s = 0 for
 
-#### The F-statistic from your model output has a very low p-value (2.092e-08), which provides strong evidence against the null hypothesis. This confirms that at least one of the β coefficients significantly differs from 0, indicating the necessity of including these explanatory variables in the model to explain the variability in NO2 levels.
+The F-statistic from your model output has a very low p-value (2.092e-08), which provides strong evidence against the null hypothesis. This confirms that at least one of the β coefficients significantly differs from 0, indicating the necessity of including these explanatory variables in the model to explain the variability in NO2 levels.
 
-#### Multiple R-squared: 0.787, implying that approximately 78.7% of the variability in NO2 levels is explained by the variations in retail and recreation, parks, and transit stations.
+Multiple R-squared: 0.787, implying that approximately 78.7% of the variability in NO2 levels is explained by the variations in retail and recreation, parks, and transit stations.
 
-### Adjusted R-squared: 0.7542, which takes into account the number of predictors in the model and provides a more precise measure of the model's explanatory power, adjusting for the degrees of freedom.
+Adjusted R-squared: 0.7542, which takes into account the number of predictors in the model and provides a more precise measure of the model's explanatory power, adjusting for the degrees of freedom.
 
 <a name="model_2022_5"></a>
 # 6.3.5 2022_K-fold Cross-validation: 
