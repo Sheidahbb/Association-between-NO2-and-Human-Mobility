@@ -529,11 +529,11 @@ plt.show()
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/73728c96-380e-4d8b-a7a4-c5c0fb3d9746)
 
-As an instant I brought Mobility data on the map and the distribution of that for different states located in different counties:
-**This visualization is done by tableau which is a tool for visualization and does not require coding**
+As an instance, I brought Mobility data on the map and the distribution of that for different states located in different counties:
+**I did this visualization by Tableau which is a tool for data visualization.**
 <img width="800" alt="image" src="https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/66c2d876-bbe2-46bf-b29c-855fbe8d0d99">
 
-**Note:From the visualization, the period of mid-March to mid-April is selected for further analysis**
+Note: From the visualization, the period of mid-March to mid-April is selected for further analysis
 <a name="filtering"></a>
 # 5 Filtering based on the intended period 
 Filteringmid-March to mid-April data for the year 2020, and putting it in a CSV file:
