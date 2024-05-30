@@ -909,9 +909,9 @@ title(main="Diagnostics for m4", outer=TRUE)
 ```
 ![image](https://github.com/Sheidahbb/Association-between-NO2-and-Human-Mobility/assets/113566650/7e12f994-e440-4da4-8646-8f31a202968c)
 
-The model seems good since all the variables seems significant.
+The model seems good since all the variables are significant.
 
-Seems great! based on the model that we have now, we can say that the following variables play a significant role in explaining the NO2 for the period of mid-March to mid-April for the year 2021.
+Based on the model, we have enough evidence to say that the following variables play a significant role in explaining the variation in NO2 for the period of mid-March to mid-April for the year 2021.
 
 1.parks_percent_change_from_baseline
 2.transit_stations_percent_change_from_baseline
